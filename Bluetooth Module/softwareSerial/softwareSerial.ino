@@ -1,11 +1,11 @@
 #include <SoftwareSerial.h>
 
-SoftwareSerial mySerial(3,2);
+SoftwareSerial mySerial(1,0);
 
 void setup() {
 Serial.begin(9600);
 mySerial.begin(9600);
-delay(500);
+delay(5000);
 Serial.println("go");
 }
 
@@ -17,4 +17,4 @@ void loop() {
   Serial.println(data);
   } 
 }
-m
+
