@@ -4,6 +4,7 @@ const int SENS_PIN = A0;
 const int LED_PIN = 13;
 
 int sensorValue = 0;
+int incoming = 0;
 
 boolean toggle = true;
 
@@ -12,8 +13,11 @@ void setup() {
 }
 
 void loop() {
+  //Serial.println("HI!");
     if (Serial.available()) {
-        Serial.read();
+        incoming = Serial.read();
+        Serial.print("I received: ");
+        Serial.println(incoming);
         sensorValue = analogRead(SENS_PIN);
         Serial.println(sensorValue);
         digitalWrite(LED_PIN, toggle); // toggle the LED
