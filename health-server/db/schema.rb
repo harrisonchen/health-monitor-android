@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20141205082152) do
   create_table "temperatures", force: true do |t|
     t.decimal  "fahrenheit", default: 0.0
     t.decimal  "celsius",    default: 0.0
+    t.decimal  "kelvin",     default: 0.0
     t.datetime "created_at"
     t.datetime "updated_at"
   end

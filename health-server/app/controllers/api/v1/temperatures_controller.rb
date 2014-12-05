@@ -3,7 +3,7 @@ module Api
 		class TemperaturesController < ApplicationController
 
 			def index
-				render json: { temperatures: Temperature.all}
+				render json: { temperatures: Temperature.all.order("id DESC") }
 			end
 
 			def show
@@ -17,8 +17,7 @@ module Api
 
 			def create
 				temperature = Temperature.create({
-					fahrenheit: params[:fahrenheit],
-					celsius: params[:celsius]
+					fahrenheit: params[:fahrenheit]
 				})
 				if temperature.valid?
 					render json: { success: true, temperature: temperature }
