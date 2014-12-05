@@ -3,6 +3,7 @@ package com.example.justinkhoo.wristbandapp;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +30,9 @@ public class activity1 extends Activity {
     Button bluetoothButton;
     ListView listView;
     ArrayAdapter<String> deviceArrayAdapter;
+    ArrayList<BluetoothDevice> deviceList;
+
+    ConnectThread connectThread;
 
     // Create a BroadcastReceiver for ACTION_FOUND
     final BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -38,18 +42,12 @@ public class activity1 extends Activity {
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 // Get the BluetoothDevice object from the Intent
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                deviceList.add(device);
                 // Add the name and address to an array adapter to show in a ListView
                 deviceArrayAdapter.add(device.getName() + "\n" + device.getAddress());
                 deviceArrayAdapter.notifyDataSetChanged();
                 Log.d("BLUETOOTH PAIRING: ", device.getName());
             }
-//            if (bluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)) {
-//                Log.d("Start Discovery: ", "started");
-//            }
-//            if (bluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-//                Log.d("Start Discovery: ", "finished");
-//                bluetoothAdapter.cancelDiscovery();
-//            }
         }
     };
 
@@ -59,6 +57,8 @@ public class activity1 extends Activity {
         setContentView(R.layout.activity_activity1);
 
         bluetoothButton = (Button) findViewById(R.id.bluetoothButton);
+
+        deviceList = new ArrayList<BluetoothDevice>();
 
         listView = (ListView) findViewById(R.id.listView);
         deviceArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
@@ -78,7 +78,6 @@ public class activity1 extends Activity {
                 public void onClick(View view) {
                     if(!bluetoothAdapter.isEnabled()) {
                         connectBluetooth();
-                        discover();
                     }
                     else {
                         discover();
@@ -91,6 +90,8 @@ public class activity1 extends Activity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.d("Device:", deviceArrayAdapter.getItem(i));
+                connectThread = new ConnectThread(deviceList.get(i), bluetoothAdapter);
+                connectThread.run();
             }
         });
     }
@@ -111,10 +112,6 @@ public class activity1 extends Activity {
             Log.d("Start Discovery: ", "true");
             deviceArrayAdapter.clear();
         }
-        else {
-            Toast.makeText(getApplicationContext(),"Bluetooth discovery failed" , Toast.LENGTH_LONG).show();
-            Log.d("Start Discovery: ", "false");
-        }
     }
 
 
@@ -129,6 +126,7 @@ public class activity1 extends Activity {
         if(requestCode == REQUEST_ENABLE_BT) {
             if(bluetoothAdapter.isEnabled()) {
                 Toast.makeText(getApplicationContext(),"Bluetooth turned on" , Toast.LENGTH_LONG).show();
+                discover();
             }
             else {
                 Toast.makeText(getApplicationContext(),"Bluetooth failed to turn on" , Toast.LENGTH_LONG).show();
