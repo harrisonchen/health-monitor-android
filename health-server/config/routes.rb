@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       resources :temperatures
+      resources :heartbeats
+
+      match 'status', to: '/api/v1/monitor#status', via: 'GET'
     end
   end
 

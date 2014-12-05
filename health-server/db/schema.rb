@@ -11,10 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141205082152) do
+ActiveRecord::Schema.define(version: 20141205183104) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "heartbeats", force: true do |t|
+    t.integer  "beats_per_second", default: 0
+    t.integer  "beats_per_minute", default: 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "temperatures", force: true do |t|
     t.decimal  "fahrenheit", default: 0.0
