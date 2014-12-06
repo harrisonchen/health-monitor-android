@@ -15,9 +15,12 @@
 #include <SoftwareSerial.h>
 
 SoftwareSerial mySerial(10, 11); // RX, TX
+int level;
 
 void setup()  
 {
+  
+  pinMode(13,OUTPUT);
   // Open serial communications and wait for port to open:
   Serial.begin(57600);
   while (!Serial) {
@@ -34,9 +37,14 @@ void setup()
 
 void loop() // run over and over
 {
-  if (mySerial.available())
+  if (mySerial.available()){
     Serial.write(mySerial.read());
+    digitalWrite(13, level);
+    level = ~level;
+  }
   if (Serial.available())
     mySerial.write(Serial.read());
+    
+
 }
 
