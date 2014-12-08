@@ -29,7 +29,8 @@
         android:text="Search Devices"
         android:id="@+id/bluetoothButton"
         android:layout_below="@+id/titleTextView"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <ListView
         android:layout_width="wrap_content"
@@ -39,4 +40,13 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/bluetoothButton" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="status"
+        android:id="@+id/button"
+        android:layout_above="@+id/listView"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="goToMonitor" />
 </RelativeLayout>

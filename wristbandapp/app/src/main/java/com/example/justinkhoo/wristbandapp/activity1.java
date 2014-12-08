@@ -160,4 +160,9 @@ public class activity1 extends Activity {
         unregisterReceiver(receiver);
     }
 
+    public void goToMonitor(View view){
+        Intent i = new Intent(activity1.this, Monitor.class);
+        startActivity(i);
+    }
+
 }
