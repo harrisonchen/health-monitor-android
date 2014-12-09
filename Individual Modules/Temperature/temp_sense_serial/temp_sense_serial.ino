@@ -6,14 +6,16 @@ SoftwareSerial mySerial(10, 11); // RX, TX
 int sensorPin = 1; //Says we are working with a sensor in analog pin 0
 /*
 * setup() - this function runs once when you turn your Arduino on
-* We initialize the serial connection with the computer
-*/
+ * We initialize the serial connection with the computer
+ */
+
+
 void setup()
 {
- Serial.begin(9600); //Start the serial connection with the computer
+  Serial.begin(9600); //Start the serial connection with the computer
   mySerial.begin(9600);
   mySerial.println("Hello, world?");
- //to view the result open the serial monitor 
+  //to view the result open the serial monitor 
 }
 void loop() // run over and over againx
 {
@@ -22,13 +24,28 @@ void loop() // run over and over againx
   // converting that reading to voltage, for 3.3v arduino use 3.3
   float voltage = reading * 5.0;
   voltage /= 1024.0; // print out the voltage to the serial port
+
+  float temperature = log(((10240000/reading) - 10000));
+  temperature = 1 / (0.001129148 + (0.000234125 + (0.0000000876741 * temperature * temperature ))* temperature );
+  temperature = temperature - 273.15;
+
+  float farenheit = temperature * 9.0 / 5.0 + 32.0;
   delay(1000); //waiting a second
- 
+
   if (mySerial.available()){
-    mySerial.write(voltage);
+    mySerial.print(temperature);
+    mySerial.print(" C / ");
+     mySerial.print(farenheit);
+    mySerial.println(" F");
   }
   if(Serial.available()){
-    Serial.write(voltage);
+    Serial.print(temperature);
+    Serial.print(" C / ");
+    Serial.print(farenheit);
+    Serial.println(" F");
   }
- 
+
 }
+
+
+
