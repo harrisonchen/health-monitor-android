@@ -45,7 +45,8 @@
         android:id="@+id/listView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/bluetoothButton" />
+        android:layout_below="@+id/bluetoothButton"
+        android:layout_above="@+id/sendRandomDataButton" />
 
     <Button
         android:layout_width="wrap_content"
@@ -58,4 +59,16 @@
         android:onClick="goToMonitor"
         android:layout_toRightOf="@+id/fakeView"
         android:layout_toEndOf="@+id/fakeView" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send Random Data"
+        android:id="@+id/sendRandomDataButton"
+        android:onClick="sendRandomData"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>

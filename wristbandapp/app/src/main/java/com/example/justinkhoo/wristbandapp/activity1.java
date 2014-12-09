@@ -19,10 +19,16 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.message.BasicNameValuePair;
+
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 
-public class activity1 extends Activity {
+public class activity1 extends Activity implements MyAsyncResponse {
 
     private static final int REQUEST_ENABLE_BT = 1;
     BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -114,7 +120,19 @@ public class activity1 extends Activity {
         }
     }
 
+    public void sendRandomData(View view){
+        String url = "https://health-monitor.herokuapp.com/api/v1/heartbeats.json?";
 
+        List<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
+        double randomVal = 80 + 25 * Math.random();
+        params.add(new BasicNameValuePair("beats_per_minute", Double.toString(randomVal)));
+        String paramString = URLEncodedUtils.format(params, "utf-8");
+
+        url += paramString;
+        HttpPost httpPost = new HttpPost(url);
+
+        new MyHttpPost(this).execute(httpPost);
+    }
 
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {
@@ -165,4 +183,8 @@ public class activity1 extends Activity {
         startActivity(i);
     }
 
+    @Override
+    public void processFinish(String output) {
+
+    }
 }

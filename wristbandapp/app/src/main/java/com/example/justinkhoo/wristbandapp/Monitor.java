@@ -38,8 +38,6 @@ public class Monitor extends Activity implements  MyAsyncResponse {
         getData();
     }
 
-
-
     public void getData() {
         //Creates the URL to call Get requests from the server with the added headers that
         //deal with authentication
