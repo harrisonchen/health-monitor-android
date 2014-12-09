@@ -27,9 +27,6 @@ public class Monitor extends Activity implements  MyAsyncResponse {
     JSONObject dataJson;
     JSONArray dataJArray;
     TextView temp_msg, heartbeat_msg, message_msg;
-    private int interval = 1000;
-
-    private Handler myhandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
