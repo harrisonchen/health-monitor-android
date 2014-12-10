@@ -1,7 +1,10 @@
 package com.example.justinkhoo.wristbandapp;
 
 import android.bluetooth.BluetoothSocket;
+import android.content.IntentFilter;
+import android.os.SystemClock;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,20 +35,21 @@ public class ConnectedThread extends Thread {
     }
 
     public void run() {
-        byte[] buffer = new byte[1024];
+        byte[] buffer = new byte[256];
         int bytes;
 
         while(true){
             try {
-                Log.d("WEEEE", "");
-                bytes = inputStream.read(buffer);
-                String string = "";
-                for(int i = 0; i < 1024; ++i) {
-                    if(buffer[i] != 0) {
-                        string += buffer[i] + ":";
+                if(inputStream.available() > 0) {
+                    bytes = inputStream.read(buffer);
+                    String message = new String(buffer, 0, bytes);
+                    if(Float.valueOf(message) > 10){
+                        Log.d("Message: ", message);
                     }
                 }
-                Log.d("Message:", String.valueOf(string));
+                else{
+                    SystemClock.sleep(100);
+                }
             }
             catch (IOException e) {
                 e.printStackTrace();
