@@ -10,25 +10,27 @@ OneWire ds(DS18S20_Pin);  // on digital pin 2
 
 void setup(void) {
   Serial.begin(9600);
+  Serial.println("Hello, world!");
+    mySerial.begin(9600);
+  mySerial.println("Hello, world!");
 }
 
 void loop(void) {
   float temperature = getTemp();
   float farenheit = (temperature * 9 / 5) + 32;
-  if (mySerial.available()){
-    mySerial.print(temperature);
-    mySerial.print(" C / ");
+  //if (mySerial.available()){
+    //mySerial.print(temperature);
+   // mySerial.print(" C / ");
     mySerial.print(farenheit);
-    mySerial.println(" F");
-  }
+    //mySerial.println(" F");
+  //}
   if(Serial.available()){
     Serial.print(temperature);
     Serial.print(" C / ");
     Serial.print(farenheit);
     Serial.println(" F");
   }
-  mySerial.begin(9600);
-  mySerial.println("Hello, world?");
+
   delay(1000); //just here to slow down the output so it is easier to read
 
 }
