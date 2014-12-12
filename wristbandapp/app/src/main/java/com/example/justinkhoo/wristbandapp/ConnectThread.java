@@ -67,6 +67,7 @@ public class ConnectThread extends Thread implements MyAsyncResponse {
                 BluetoothSocketListener bsl = new BluetoothSocketListener(bluetoothSocket);
                 Thread messageListener = new Thread(bsl);
                 messageListener.start();
+                Log.d("BluetoothListener: ", "Success");
 //                connectedThread = new ConnectedThread(bluetoothSocket);
 //                connectedThread.run();
 
@@ -81,7 +82,6 @@ public class ConnectThread extends Thread implements MyAsyncResponse {
                 e1.printStackTrace();
             }
 
-
             return;
         }
     }
@@ -89,6 +89,7 @@ public class ConnectThread extends Thread implements MyAsyncResponse {
     public void cancel() {
         try {
             bluetoothSocket.close();
+            Log.d("CONNECTTHREAD CANCEL: ", "CALLED");
         }
         catch (IOException e) {
             e.printStackTrace();

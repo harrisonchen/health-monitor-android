@@ -39,6 +39,7 @@ public class activity1 extends Activity implements MyAsyncResponse {
     ArrayList<BluetoothDevice> deviceList;
 
     ConnectThread connectThread;
+    boolean bluetoothSocketOpened = false;
 
     // Create a BroadcastReceiver for ACTION_FOUND
     final BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -95,9 +96,11 @@ public class activity1 extends Activity implements MyAsyncResponse {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                bluetoothAdapter.cancelDiscovery();
                 Log.d("Device:", deviceArrayAdapter.getItem(i));
                 connectThread = new ConnectThread(deviceList.get(i), bluetoothAdapter);
                 connectThread.run();
+                bluetoothSocketOpened = true;
             }
         });
     }
@@ -175,7 +178,12 @@ public class activity1 extends Activity implements MyAsyncResponse {
     protected void onDestroy() {
         // TODO Auto-generated method stub
         super.onDestroy();
+        bluetoothAdapter.cancelDiscovery();
         unregisterReceiver(receiver);
+//        if(bluetoothSocketOpened){
+//            connectThread.cancel();
+//        }
+        Log.d("ACTIVITY1 ON DESTROY: ", "CALLED");
     }
 
     public void goToMonitor(View view){
