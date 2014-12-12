@@ -129,8 +129,9 @@ public class ConnectThread extends Thread implements MyAsyncResponse {
                         message = new String(buffer, 0, bytesRead);
                         if(Float.valueOf(message) > 10){
                             Log.d("Message: ", message);
+                            sendTemperature(message);
+
                         }
-                        sendTemperature(message);
 //                        socket.getInputStream();
                     }
                     else{
