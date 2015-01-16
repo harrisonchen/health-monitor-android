@@ -4,5 +4,8 @@
     <string name="app_name">wristbandapp</string>
     <string name="title">Health Monitor App</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_sendreceiveddata">sendreceiveddata</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_monitor">Monitor</string>
 
 </resources>

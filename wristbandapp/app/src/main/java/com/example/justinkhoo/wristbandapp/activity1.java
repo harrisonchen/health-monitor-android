@@ -19,10 +19,16 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.message.BasicNameValuePair;
+
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 
-public class activity1 extends Activity {
+public class activity1 extends Activity implements MyAsyncResponse {
 
     private static final int REQUEST_ENABLE_BT = 1;
     BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -33,6 +39,7 @@ public class activity1 extends Activity {
     ArrayList<BluetoothDevice> deviceList;
 
     ConnectThread connectThread;
+    boolean bluetoothSocketOpened = false;
 
     // Create a BroadcastReceiver for ACTION_FOUND
     final BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -89,9 +96,11 @@ public class activity1 extends Activity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                bluetoothAdapter.cancelDiscovery();
                 Log.d("Device:", deviceArrayAdapter.getItem(i));
                 connectThread = new ConnectThread(deviceList.get(i), bluetoothAdapter);
                 connectThread.run();
+                bluetoothSocketOpened = true;
             }
         });
     }
@@ -114,7 +123,19 @@ public class activity1 extends Activity {
         }
     }
 
+    public void sendRandomData(View view){
+        String url = "https://health-monitor.herokuapp.com/api/v1/heartbeats.json?";
 
+        List<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
+        double randomVal = 80 + 25 * Math.random();
+        params.add(new BasicNameValuePair("beats_per_minute", Double.toString(randomVal)));
+        String paramString = URLEncodedUtils.format(params, "utf-8");
+
+        url += paramString;
+        HttpPost httpPost = new HttpPost(url);
+
+        new MyHttpPost(this).execute(httpPost);
+    }
 
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {
@@ -157,7 +178,21 @@ public class activity1 extends Activity {
     protected void onDestroy() {
         // TODO Auto-generated method stub
         super.onDestroy();
+        bluetoothAdapter.cancelDiscovery();
         unregisterReceiver(receiver);
+//        if(bluetoothSocketOpened){
+//            connectThread.cancel();
+//        }
+        Log.d("ACTIVITY1 ON DESTROY: ", "CALLED");
     }
 
+    public void goToMonitor(View view){
+        Intent i = new Intent(activity1.this, Monitor.class);
+        startActivity(i);
+    }
+
+    @Override
+    public void processFinish(String output) {
+
+    }
 }
