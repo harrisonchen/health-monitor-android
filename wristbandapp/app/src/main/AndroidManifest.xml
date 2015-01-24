@@ -25,6 +25,14 @@
             android:name="com.example.justinkhoo.wristbandapp.Monitor"
             android:label="@string/title_activity_monitor" >
         </activity>
+        <activity
+            android:name=".ChartDemo"
+            android:label="AChartEngine demo" >
+        </activity>
+        <activity android:name="com.example.justinkhoo.wristbandapp.chart.XYChartBuilder" />
+        <activity android:name="com.example.justinkhoo.wristbandapp.chart.PieChartBuilder" />
+        <activity android:name="org.achartengine.GraphicalActivity" />
+        <activity android:name=".GeneratedChartDemo" />
     </application>
 
 </manifest>

@@ -35,7 +35,7 @@ public class Monitor extends Activity implements  MyAsyncResponse {
         temp_msg = (TextView) findViewById(R.id.temperature);
         heartbeat_msg = (TextView) findViewById(R.id.heartbeat);
         message_msg = (TextView) findViewById(R.id.message);
-        getData();
+       // getData();
     }
 
     public void getData() {

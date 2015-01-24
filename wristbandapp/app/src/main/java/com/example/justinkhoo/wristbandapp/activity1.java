@@ -135,6 +135,9 @@ public class activity1 extends Activity implements MyAsyncResponse {
         HttpPost httpPost = new HttpPost(url);
 
         new MyHttpPost(this).execute(httpPost);
+
+        Intent i = new Intent(activity1.this, ChartDemo.class);
+        startActivity(i);
     }
 
     @Override
