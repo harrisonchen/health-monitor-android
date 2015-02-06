@@ -9,6 +9,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.client.methods.HttpPost;
@@ -41,6 +45,8 @@ public class activity1 extends Activity implements MyAsyncResponse {
     ConnectThread connectThread;
     boolean bluetoothSocketOpened = false;
 
+    Handler mHandler;
+
     // Create a BroadcastReceiver for ACTION_FOUND
     final BroadcastReceiver receiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
@@ -58,10 +64,33 @@ public class activity1 extends Activity implements MyAsyncResponse {
         }
     };
 
+    TextView testview1;
+    TextView testview2;
+    TextView testview3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activity1);
+
+        testview1 = (TextView) findViewById(R.id.testview1);
+        testview2 = (TextView) findViewById(R.id.testview2);
+        testview3 = (TextView) findViewById(R.id.testview3);
+
+        mHandler = new Handler(Looper.getMainLooper()) {
+            public void handleMessage(Message msg) {
+                String message = msg.getData().getString("message");
+                String[] parsedMessage = message.split(",");
+                if (parsedMessage.length > 0)
+                testview1.setText(parsedMessage[0]);
+                if (parsedMessage.length > 1)
+                testview2.setText(parsedMessage[1]);
+                if (parsedMessage.length > 2)
+                testview3.setText(parsedMessage[2]);
+
+//                Log.d("MESSAGE FROM HANDLER:", msg.getData().getString("message"));
+            }
+        };
 
         bluetoothButton = (Button) findViewById(R.id.bluetoothButton);
 
@@ -98,7 +127,7 @@ public class activity1 extends Activity implements MyAsyncResponse {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 bluetoothAdapter.cancelDiscovery();
                 Log.d("Device:", deviceArrayAdapter.getItem(i));
-                connectThread = new ConnectThread(deviceList.get(i), bluetoothAdapter);
+                connectThread = new ConnectThread(deviceList.get(i), bluetoothAdapter, mHandler);
                 connectThread.run();
                 bluetoothSocketOpened = true;
             }

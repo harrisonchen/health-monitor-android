@@ -3,6 +3,10 @@ package com.example.justinkhoo.wristbandapp;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
@@ -23,16 +27,19 @@ public class ConnectThread extends Thread implements MyAsyncResponse {
     private BluetoothSocket bluetoothSocket;
     private final BluetoothDevice bluetoothDevice;
     private final BluetoothAdapter bluetoothAdapter;
+    private final Handler mHandler;
 
     public ConnectedThread connectedThread;
 
     private UUID DEFAULT_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
-    public ConnectThread(BluetoothDevice device, BluetoothAdapter adapter) {
+
+    public ConnectThread(BluetoothDevice device, BluetoothAdapter adapter, Handler handler) {
 
         BluetoothSocket tmp = null;
         bluetoothDevice = device;
         bluetoothAdapter = adapter;
+        mHandler = handler;
 
         try {
             tmp = device.createRfcommSocketToServiceRecord(DEFAULT_UUID);
@@ -122,7 +129,18 @@ public class ConnectThread extends Thread implements MyAsyncResponse {
                         bytesRead = instream.read(buffer);
 
                         message = new String(buffer, 0, bytesRead);
-                        Log.d("Message: ", message);
+                        String[] parsedMessage = message.split(",");
+                        Message msgObj = mHandler.obtainMessage();
+                        Bundle b = new Bundle();
+                        b.putString("message", message);
+                        msgObj.setData(b);
+                        mHandler.sendMessage(msgObj);
+//                        Log.d("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", "");
+//                        Log.d("Message: ", message);
+//                        for(int i = 0; i < parsedMessage.length; i++) {
+//                            Log.d("Parsed:", parsedMessage[i]);
+//                        }
+//                        Log.d("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", "");
                     }
                     else{
                         SystemClock.sleep(100);
