@@ -118,39 +118,15 @@ public class ConnectThread extends Thread implements MyAsyncResponse {
                 String message = "";
                 while (true) {
                     message = "";
-//                    bytesRead = instream.read(buffer);
                     if(instream.available() > 0) {
-//                        while ((bytesRead==bufferSize)&&(buffer[bufferSize-1] != 0)) {
-//                            message = message + new String(buffer, 0, bytesRead);
-//                            bytesRead = instream.read(buffer);
-//                        }
-
                         bytesRead = instream.read(buffer);
 
                         message = new String(buffer, 0, bytesRead);
-                        if(Float.valueOf(message) > 10){
-                            Log.d("Message: ", message);
-                            sendTemperature(message);
-
-                        }
-//                        socket.getInputStream();
+                        Log.d("Message: ", message);
                     }
                     else{
                         SystemClock.sleep(100);
                     }
-
-//                    message = "";
-//                    bytesRead = instream.read(buffer);
-//                    if (bytesRead != -1) {
-//                        while ((bytesRead==bufferSize)&&(buffer[bufferSize-1] != 0)) {
-//                            message = message + new String(buffer, 0, bytesRead);
-//                            bytesRead = instream.read(buffer);
-//                        }
-//                        message = message + new String(buffer, 0, bytesRead - 1);
-//
-////                        handler.post(new MessagePoster(textView, message));
-//                        socket.getInputStream();
-//                    }
                 }
             } catch (IOException e) {
                 Log.d("BLUETOOTH_COMMS", e.getMessage());
