@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.justinkhoo.wristbandapp" >
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -26,13 +27,17 @@
             android:label="@string/title_activity_monitor" >
         </activity>
         <activity
-            android:name=".ChartDemo"
+            android:name="com.example.justinkhoo.wristbandapp.ChartDemo"
             android:label="AChartEngine demo" >
         </activity>
         <activity android:name="com.example.justinkhoo.wristbandapp.chart.XYChartBuilder" />
         <activity android:name="com.example.justinkhoo.wristbandapp.chart.PieChartBuilder" />
         <activity android:name="org.achartengine.GraphicalActivity" />
-        <activity android:name=".GeneratedChartDemo" />
+        <activity android:name="com.example.justinkhoo.wristbandapp.GeneratedChartDemo" />
+        <activity
+            android:name="com.example.justinkhoo.wristbandapp.sensorchart"
+            android:label="@string/title_activity_sensorchart" >
+        </activity>
     </application>
 
 </manifest>
