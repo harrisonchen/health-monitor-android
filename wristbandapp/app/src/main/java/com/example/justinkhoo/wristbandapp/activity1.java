@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.example.justinkhoo.wristbandapp.chart.SensorValuesChart;
 
 public class activity1 extends Activity implements MyAsyncResponse {
 
@@ -153,6 +154,8 @@ public class activity1 extends Activity implements MyAsyncResponse {
     }
 
     public void sendRandomData(View view){
+
+
         String url = "https://health-monitor.herokuapp.com/api/v1/heartbeats.json?";
 
         List<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
@@ -164,8 +167,9 @@ public class activity1 extends Activity implements MyAsyncResponse {
         HttpPost httpPost = new HttpPost(url);
 
         new MyHttpPost(this).execute(httpPost);
-
-        Intent i = new Intent(activity1.this, ChartDemo.class);
+        SensorValuesChart mychart = new SensorValuesChart();
+        Intent i = mychart.execute(this);
+        //Intent i = new Intent(activity1.this, ChartDemo.class);
         startActivity(i);
     }
 
