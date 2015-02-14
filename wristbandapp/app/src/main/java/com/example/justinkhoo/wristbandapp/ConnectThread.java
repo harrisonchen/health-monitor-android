@@ -132,6 +132,7 @@ public class ConnectThread extends Thread implements MyAsyncResponse {
                         String[] parsedMessage = message.split(",");
                         Message msgObj = mHandler.obtainMessage();
                         Bundle b = new Bundle();
+                        Log.d("ASDFASDFASDADSF: ", message);
                         b.putString("message", message);
                         msgObj.setData(b);
                         mHandler.sendMessage(msgObj);

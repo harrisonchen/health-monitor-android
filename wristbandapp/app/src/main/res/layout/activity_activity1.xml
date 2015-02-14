@@ -82,31 +82,8 @@
         android:gravity="center"
         android:layout_above="@+id/sendRandomDataButton"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="dos"
-        android:id="@+id/testview2"
-        android:textSize="24sp"
-        android:width="120dp"
-        android:gravity="center"
-        android:layout_above="@+id/sendRandomDataButton"
-        android:layout_toRightOf="@+id/testview1"
-        android:layout_toEndOf="@+id/testview1" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="tres"
-        android:id="@+id/testview3"
-        android:textSize="24sp"
-        android:width="120dp"
-        android:gravity="center"
-        android:layout_above="@+id/sendRandomDataButton"
-        android:layout_toRightOf="@+id/testview2"
-        android:layout_toEndOf="@+id/testview2"
+        android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
 </RelativeLayout>

@@ -59,14 +59,12 @@ public class activity1 extends Activity implements MyAsyncResponse {
                 // Add the name and address to an array adapter to show in a ListView
                 deviceArrayAdapter.add(device.getName() + "\n" + device.getAddress());
                 deviceArrayAdapter.notifyDataSetChanged();
-                Log.d("BLUETOOTH PAIRING: ", device.getName());
+//                Log.d("BLUETOOTH PAIRING: ", device.getName());
             }
         }
     };
 
     TextView testview1;
-    TextView testview2;
-    TextView testview3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,19 +72,12 @@ public class activity1 extends Activity implements MyAsyncResponse {
         setContentView(R.layout.activity_activity1);
 
         testview1 = (TextView) findViewById(R.id.testview1);
-        testview2 = (TextView) findViewById(R.id.testview2);
-        testview3 = (TextView) findViewById(R.id.testview3);
 
         mHandler = new Handler(Looper.getMainLooper()) {
             public void handleMessage(Message msg) {
                 String message = msg.getData().getString("message");
-                String[] parsedMessage = message.split(",");
-                if (parsedMessage.length > 0)
-                testview1.setText(parsedMessage[0]);
-                if (parsedMessage.length > 1)
-                testview2.setText(parsedMessage[1]);
-                if (parsedMessage.length > 2)
-                testview3.setText(parsedMessage[2]);
+//                String[] parsedMessage = message.split(",");
+                testview1.setText(message);
 
 //                Log.d("MESSAGE FROM HANDLER:", msg.getData().getString("message"));
             }
@@ -103,11 +94,7 @@ public class activity1 extends Activity implements MyAsyncResponse {
         if(bluetoothAdapter != null) {
             // Register the BroadcastReceiver
             IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-//            IntentFilter filter2 = new IntentFilter(bluetoothAdapter.ACTION_DISCOVERY_STARTED);
-//            IntentFilter filter3 = new IntentFilter(bluetoothAdapter.ACTION_DISCOVERY_FINISHED);
             registerReceiver(receiver, filter); // Don't forget to unregister during onDestroy
-//            registerReceiver(receiver, filter2);
-//            registerReceiver(receiver, filter3);
 
             bluetoothButton.setOnClickListener(new View.OnClickListener() {
                 @Override
