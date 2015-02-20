@@ -15,8 +15,13 @@
  */
 package com.example.justinkhoo.wristbandapp.chart;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Queue;
+import java.util.LinkedList;
+import java.util.Random;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.chart.PointStyle;
@@ -28,11 +33,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
+import android.os.Handler;
+
+import com.example.justinkhoo.wristbandapp.DBTools;
 
 /**
  * Temperature sensor demo chart.
  */
-public class SensorValuesChart extends AbstractDemoChart {
+public class SensorValuesChart extends AbstractDemoChart{
   private static final long HOUR = 3600 * 1000;
 
   private static final long DAY = HOUR * 24;
@@ -63,7 +71,11 @@ public class SensorValuesChart extends AbstractDemoChart {
    * @param context the context
    * @return the built intent
    */
-  public Intent execute(Context context) {
+  public Intent execute(Context context){
+        Intent i = new Intent();
+        return  i;
+  }
+  public Intent execute1(Context context, double[] array) {
     String[] titles = new String[] { "Inside", "Outside" };
     long now = Math.round(new Date().getTime() / DAY) * DAY;
     List<Date[]> x = new ArrayList<Date[]>();
@@ -74,13 +86,23 @@ public class SensorValuesChart extends AbstractDemoChart {
       }
       x.add(dates);
     }
-    List<double[]> values = new ArrayList<double[]>();
 
+
+    double[] al = new double[]{21.2, 21.5, 21.7, 21.5, 21.4, 21.4, 21.3, 21.1, 20.6, 20.3, 20.2,
+                               19.9, 19.7, 19.6, 19.9, 20.3, 20.6, 20.9, 21.2, 21.6, 21.9, 22.1, 21.7, 21.5, };
+    List<double[]> values = new ArrayList<double[]>();
+      double[] arr = al;
+      double[] arr1 = new double[24];
+      Random random = new Random();
+      int randomNum = random.nextInt() %50;
+
+
+      values.add(array);
     values.add(new double[] { 21.2, 21.5, 21.7, 21.5, 21.4, 21.4, 21.3, 21.1, 20.6, 20.3, 20.2,
-        19.9, 19.7, 19.6, 19.9, 20.3, 20.6, 20.9, 21.2, 21.6, 21.9, 22.1, 21.7, 21.5 });
-    values.add(new double[] { 1.9, 1.2, 0.9, 0.5, 0.1, -0.5, -0.6, MathHelper.NULL_VALUE,
-        MathHelper.NULL_VALUE, -1.8, -0.3, 1.4, 3.4, 4.9, 7.0, 6.4, 3.4, 2.0, 1.5, 0.9, -0.5,
-        MathHelper.NULL_VALUE, -1.9, -2.5, -4.3 });
+        19.9, 19.7, 19.6, 19.9, 20.3, 20.6, 20.9, 21.2, 21.6, 21.9, 22.1, 21.7, 21.5,  });
+//   values.add(new double[] { 1.9, 1.2, 0.9, 0.5, 0.1, -0.5, -0.6, 10.1,
+//        10.1, -1.8, -0.3, 1.4, 3.4, 4.9, 7.0, 6.4, 3.4, 2.0, 1.5, 0.9, -0.5,
+//        10.1, -1.9, -2.5, -4.3, });
 
     int[] colors = new int[] { Color.GREEN, Color.BLUE };
     PointStyle[] styles = new PointStyle[] { PointStyle.CIRCLE, PointStyle.DIAMOND };

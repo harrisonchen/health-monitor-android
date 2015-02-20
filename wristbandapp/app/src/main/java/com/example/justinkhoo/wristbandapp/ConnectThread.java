@@ -134,7 +134,9 @@ public class ConnectThread extends Thread implements MyAsyncResponse {
                         Bundle b = new Bundle();
                         b.putString("message", message);
                         msgObj.setData(b);
+
                         mHandler.sendMessage(msgObj);
+
 //                        Log.d("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", "");
 //                        Log.d("Message: ", message);
 //                        for(int i = 0; i < parsedMessage.length; i++) {
