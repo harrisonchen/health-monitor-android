@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:textSize="36dp"
         android:padding="16dp"
-        android:background="#33FF33"
+        android:background="#ffff0820"
         android:textColor="#E8E8E8"
         android:textStyle="bold"
         android:layout_alignParentRight="true"
@@ -111,13 +111,15 @@
         android:layout_alignParentEnd="true" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:background="@drawable/rounded_btn"
+        android:layout_width="@dimen/activity_horizontal_margin"
         android:layout_height="wrap_content"
         android:text="Chart"
         android:id="@+id/sensorbutton"
-        android:layout_toEndOf="@+id/testview2"
+        android:layout_toRightOf="@+id/testview2"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:onClick="goToSensorChart" />
+        android:onClick="goToSensorChart"
+        style="@android:style/Animation.Translucent" />
 </RelativeLayout>
