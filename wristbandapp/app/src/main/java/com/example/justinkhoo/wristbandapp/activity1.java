@@ -9,6 +9,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,7 +20,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.justinkhoo.wristbandapp.chart.SensorValuesChart;
 
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -26,6 +32,7 @@ import org.apache.http.message.BasicNameValuePair;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 
 public class activity1 extends Activity implements MyAsyncResponse {
@@ -40,6 +47,8 @@ public class activity1 extends Activity implements MyAsyncResponse {
 
     ConnectThread connectThread;
     boolean bluetoothSocketOpened = false;
+
+    Handler mHandler;
 
     // Create a BroadcastReceiver for ACTION_FOUND
     final BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -58,10 +67,44 @@ public class activity1 extends Activity implements MyAsyncResponse {
         }
     };
 
+    TextView testview1;
+    TextView testview2;
+    TextView testview3;
+    ArrayList<String> al1 = new ArrayList<String>();
+    ArrayList<Double> al2 = new ArrayList<Double>();
+    ArrayList<Double> al3 = new ArrayList<Double>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activity1);
+
+        testview1 = (TextView) findViewById(R.id.testview1);
+        testview2 = (TextView) findViewById(R.id.testview2);
+        testview3 = (TextView) findViewById(R.id.testview3);
+
+        mHandler = new Handler(Looper.getMainLooper()) {
+            public void handleMessage(Message msg) {
+                String message = msg.getData().getString("message");
+                String[] parsedMessage = message.split(",");
+                if (parsedMessage.length > 0) {
+                    testview1.setText(parsedMessage[0]);
+                    al1.add(parsedMessage[0]);
+                   // globalvariable.globaluno= Double.parseDouble(parsedMessage[2]);
+                }
+                if (parsedMessage.length > 1) {
+                    testview2.setText(parsedMessage[1]);
+                   // al2.add(Double.parseDouble(parsedMessage[1]));
+                   // globalvariable.globaldas= Double.parseDouble(parsedMessage[2]);
+                }
+                if (parsedMessage.length > 2) {
+                    testview3.setText(parsedMessage[2]);
+                    //al3.add(Double.parseDouble(parsedMessage[2]));
+                   // globalvariable.globaltres= Double.parseDouble(parsedMessage[2]);
+                }
+
+//                Log.d("MESSAGE FROM HANDLER:", msg.getData().getString("message"));
+            }
+        };
 
         bluetoothButton = (Button) findViewById(R.id.bluetoothButton);
 
@@ -98,7 +141,7 @@ public class activity1 extends Activity implements MyAsyncResponse {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 bluetoothAdapter.cancelDiscovery();
                 Log.d("Device:", deviceArrayAdapter.getItem(i));
-                connectThread = new ConnectThread(deviceList.get(i), bluetoothAdapter);
+                connectThread = new ConnectThread(deviceList.get(i), bluetoothAdapter, mHandler);
                 connectThread.run();
                 bluetoothSocketOpened = true;
             }
@@ -193,7 +236,32 @@ public class activity1 extends Activity implements MyAsyncResponse {
         Intent i = new Intent(activity1.this, Monitor.class);
         startActivity(i);
     }
+    public double[] toArray(ArrayList<String> al){
+        String[] arr = new String[al.size()];
+        arr = al.toArray(arr);
+        double[] a_double = new double[al.size()];
+        for(int i = 0; i < al.size() ;  i++){
+            Log.d("string is ", arr[i]);
+            if(arr[i].length() > 3) {
+                String str = arr[i].substring(0, 5);
+                Log.d("arry" + String.valueOf(i), str);
+                double d = Double.parseDouble(str);
+                Log.d("double " + String.valueOf(i), String.valueOf(d));
+                if(d > 50)
+                    a_double[i] = d;
+            }
+        }
+        return a_double;
+    }
 
+    public void goToSensorChart(View view){
+        SensorValuesChart1 mychart = new SensorValuesChart1();
+
+        double [] array = toArray(al1);
+        Log.d("arry size is : ", String.valueOf(array.length));
+        Intent i = mychart.execute(this, array);
+        startActivity(i);
+    }
     @Override
     public void processFinish(String output) {
 
