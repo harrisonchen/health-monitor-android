@@ -111,7 +111,6 @@
         android:layout_alignParentEnd="true" />
 
     <Button
-        android:background="@drawable/rounded_btn"
         android:layout_width="@dimen/activity_horizontal_margin"
         android:layout_height="wrap_content"
         android:text="Chart"
@@ -120,6 +119,5 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:onClick="goToSensorChart"
-        style="@android:style/Animation.Translucent" />
+        android:onClick="goToSensorChart" />
 </RelativeLayout>
