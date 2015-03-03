@@ -14,5 +14,6 @@
     <string name="new_series">New series</string>
     <string name="title_activity_devices">Devices</string>
     <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="title_activity_lobby">Lobby</string>
 
 </resources>

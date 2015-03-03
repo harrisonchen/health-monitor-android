@@ -5,9 +5,9 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:background="#FFFFFF"
-    tools:context="com.example.justinkhoo.wristbandapp.Devices">
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.example.justinkhoo.wristbandapp.Lobby">
 
     <ListView
         android:layout_width="wrap_content"
@@ -15,14 +15,14 @@
         android:id="@+id/listView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/findDevicesButton" />
+        android:layout_above="@+id/myHealthButton" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Find Devices"
-        android:background="@drawable/blue_button"
-        android:id="@+id/findDevicesButton"
+        android:text="My Health"
+        android:background="@drawable/orange_button"
+        android:id="@+id/myHealthButton"
         android:textSize="28sp"
         android:textColor="#FFFFFF"
         android:padding="14sp"
