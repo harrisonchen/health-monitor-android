@@ -53,6 +53,10 @@
             android:name=".Steps"
             android:label="@string/title_activity_steps" >
         </activity>
+        <activity
+            android:name=".Temperatures"
+            android:label="@string/title_activity_temperatures" >
+        </activity>
     </application>
 
 </manifest>
