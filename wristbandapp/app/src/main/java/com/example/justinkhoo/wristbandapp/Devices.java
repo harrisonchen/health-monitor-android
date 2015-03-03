@@ -34,7 +34,7 @@ public class Devices extends Activity {
 
                 overridePendingTransition(R.anim.slide_up_in, R.anim.slide_up_out);
             }
-        }, 1000);
+        }, 1500);
 
     }
 

@@ -34,7 +34,7 @@ public class SplashScreen extends Activity {
                 // close this activity
                 finish();
 
-                overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         }, SPLASH_TIME_OUT);
     }
