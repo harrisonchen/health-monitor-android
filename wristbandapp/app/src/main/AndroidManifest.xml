@@ -49,6 +49,10 @@
             android:name=".Lobby"
             android:label="@string/title_activity_lobby" >
         </activity>
+        <activity
+            android:name=".Steps"
+            android:label="@string/title_activity_steps" >
+        </activity>
     </application>
 
 </manifest>
