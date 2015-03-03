@@ -14,6 +14,11 @@ public class Steps extends Activity {
         setContentView(R.layout.activity_steps);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

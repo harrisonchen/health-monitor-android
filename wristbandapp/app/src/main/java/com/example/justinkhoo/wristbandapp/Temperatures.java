@@ -14,6 +14,11 @@ public class Temperatures extends Activity {
         setContentView(R.layout.activity_temperatures);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -1,48 +1,39 @@
 package com.example.justinkhoo.wristbandapp;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 
-public class Devices extends Activity {
+public class Heartrate extends Activity {
+
+    TextView heartbeatTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_devices);
+        setContentView(R.layout.activity_heartrate);
 
-        new Handler().postDelayed(new Runnable() {
+        Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
 
-            /*
-             * Showing splash screen with a timer. This will be useful when you
-             * want to show case your app logo / company
-             */
-
-            @Override
-            public void run() {
-                // This method will be executed once the timer is over
-                // Start your app main activity
-                Intent i = new Intent(Devices.this, Lobby.class);
-                startActivity(i);
-
-                // close this activity
-                finish();
-
-                overridePendingTransition(R.anim.slide_up_in, R.anim.slide_up_out);
-            }
-        }, 1000);
+        heartbeatTextView = (TextView) findViewById( R.id.heartbeatTextView );
+        heartbeatTextView.setTypeface(font);
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.devices, menu);
+        getMenuInflater().inflate(R.menu.heartrate, menu);
         return true;
     }
 

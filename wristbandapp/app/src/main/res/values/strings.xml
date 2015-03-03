@@ -17,5 +17,6 @@
     <string name="title_activity_lobby">Lobby</string>
     <string name="title_activity_steps">Steps</string>
     <string name="title_activity_temperatures">Temperatures</string>
+    <string name="title_activity_heartrate">Heartrate</string>
 
 </resources>
