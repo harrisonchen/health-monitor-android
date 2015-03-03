@@ -47,19 +47,23 @@
         </activity>
         <activity
             android:name=".Lobby"
-            android:label="@string/title_activity_lobby" >
+            android:label="@string/title_activity_lobby"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".Steps"
-            android:label="@string/title_activity_steps" >
+            android:label="@string/title_activity_steps"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".Temperatures"
-            android:label="@string/title_activity_temperatures" >
+            android:label="@string/title_activity_temperatures"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".Heartrate"
-            android:label="OneBand" >
+            android:label="OneBand"
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 
