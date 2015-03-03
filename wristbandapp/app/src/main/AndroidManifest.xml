@@ -33,6 +33,12 @@
             android:name=".Devices"
             android:label="@string/title_activity_devices"
             android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".SplashScreen"
+            android:label="OneBand"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

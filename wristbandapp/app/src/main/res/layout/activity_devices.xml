@@ -24,14 +24,20 @@
         android:text="Find Devices"
         android:background="@drawable/my_button"
         android:id="@+id/button"
-        android:textColor="#33FFCC"
-        android:textSize="24dp"
-        android:layout_margin="8dp"
-        android:padding="14px"
+        android:textSize="28sp"
+        android:textColor="#FFFFFF"
+        android:padding="14sp"
+        android:width="300sp"
+        android:layout_marginTop="8sp"
+        android:layout_marginBottom="8sp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_centerHorizontal="true" />
+
+    <ViewStub
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/viewStub"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
