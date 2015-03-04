@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,19 +34,25 @@ public class Devices extends Activity {
     ArrayList<BluetoothDevice> deviceList;
     ArrayList<String> arrayList;
 
+    ConnectThread connectThread;
+    boolean bluetoothSocketOpened = false;
+
+    Handler mHandler;
+
     // Create a BroadcastReceiver for ACTION_FOUND
     final BroadcastReceiver receiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
+
             // When discovery finds a device
-//            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-//                // Get the BluetoothDevice object from the Intent
-//                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-//                deviceList.add(device);
-//                // Add the name and address to an array adapter to show in a ListView
-//                deviceArrayAdapter.add(device.getName() + "\n" + device.getAddress());
-//                deviceArrayAdapter.notifyDataSetChanged();
-//            }
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                // Get the BluetoothDevice object from the Intent
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                deviceList.add(device);
+                // Add the name and address to an array adapter to show in a ListView
+                deviceArrayAdapter.add(device.getName() + "\n" + device.getAddress());
+                deviceArrayAdapter.notifyDataSetChanged();
+            }
         }
     };
 
@@ -53,13 +61,19 @@ public class Devices extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_devices);
 
+        mHandler = new Handler(Looper.getMainLooper()) {
+            public void handleMessage(Message msg) {
+//                String message = msg.getData().getString("message");
+            }
+        };
+
         deviceList = new ArrayList<BluetoothDevice>();
 
         deviceListView = (ListView) findViewById(R.id.deviceListView);
 
         arrayList = new ArrayList<String>();
         arrayList.add("Example Device");
-        deviceArrayAdapter = new ArrayAdapter<String>(this, R.layout.custom_lobby_row, arrayList);
+        deviceArrayAdapter = new ArrayAdapter<String>(this, R.layout.custom_lobby_row);
 
         deviceListView.setAdapter(deviceArrayAdapter);
 
@@ -70,7 +84,6 @@ public class Devices extends Activity {
 
             if(!bluetoothAdapter.isEnabled()) {
                 connectBluetooth();
-                discover();
             }
             else {
                 discover();
@@ -81,6 +94,11 @@ public class Devices extends Activity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 bluetoothAdapter.cancelDiscovery();
+                Log.d("Device:", deviceArrayAdapter.getItem(i));
+                connectThread = new ConnectThread(deviceList.get(i), bluetoothAdapter, mHandler);
+                connectThread.run();
+                bluetoothSocketOpened = true;
+
                 Intent intent = new Intent(Devices.this, Lobby.class);
                 startActivity(intent);
 
@@ -105,7 +123,7 @@ public class Devices extends Activity {
         else if(bluetoothAdapter.startDiscovery()) {
             Toast.makeText(getApplicationContext(),"Bluetooth discovering" , Toast.LENGTH_LONG).show();
             Log.d("Start Discovery: ", "true");
-//            deviceArrayAdapter.clear();
+            deviceArrayAdapter.clear();
         }
     }
 
@@ -122,6 +140,19 @@ public class Devices extends Activity {
                 overridePendingTransition(R.anim.slide_up_in, R.anim.slide_up_out);
             }
         }, 1000);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_ENABLE_BT) {
+            if(bluetoothAdapter.isEnabled()) {
+                Toast.makeText(getApplicationContext(),"Bluetooth turned on" , Toast.LENGTH_LONG).show();
+                discover();
+            }
+            else {
+                Toast.makeText(getApplicationContext(),"Bluetooth failed to turn on" , Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @Override
