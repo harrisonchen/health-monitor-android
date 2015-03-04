@@ -1,17 +1,38 @@
 package com.example.justinkhoo.wristbandapp;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 
 public class Steps extends Activity {
+
+    TextView stepsTextView;
+    Button clearButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_steps);
+
+        Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
+
+        stepsTextView = (TextView) findViewById(R.id.stepsTextView);
+
+        clearButton = (Button) findViewById( R.id.clearButton );
+        clearButton.setTypeface(font);
+
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                stepsTextView.setText("0");
+            }
+        });
     }
 
     @Override
