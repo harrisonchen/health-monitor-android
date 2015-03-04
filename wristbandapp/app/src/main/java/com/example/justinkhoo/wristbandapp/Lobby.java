@@ -2,13 +2,19 @@ package com.example.justinkhoo.wristbandapp;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -18,10 +24,17 @@ public class Lobby extends Activity {
     ListView listView;
     String[] items = { "Step Counter", "Heart Rate", "Contact Temperature"};
 
+    Button syncButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
+
+        Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
+
+        syncButton = (Button) findViewById( R.id.syncButton );
+        syncButton.setTypeface(font);
 
         listView = (ListView) findViewById(R.id.lobbyListView);
 
