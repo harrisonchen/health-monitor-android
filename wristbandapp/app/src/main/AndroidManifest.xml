@@ -1,21 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.justinkhoo.wristbandapp" >
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
-
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@android:style/Theme.NoTitleBar" >
         <activity
-            android:name="com.example.justinkhoo.wristbandapp.activity1"
+            android:name=".activity1"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".Monitor"
+            android:label="@string/title_activity_monitor" >
+        </activity>
+        <activity
+            android:name=".ChartDemo"
+            android:label="AChartEngine demo" >
+        </activity>
+        <activity android:name=".chart.XYChartBuilder" />
+        <activity android:name=".chart.PieChartBuilder" />
+        <activity android:name="org.achartengine.GraphicalActivity" />
+        <activity android:name=".GeneratedChartDemo" />
+        <activity
+            android:name=".Devices"
+            android:label="@string/title_activity_devices"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".SplashScreen"
+            android:label="OneBand"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,18 +46,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.justinkhoo.wristbandapp.Monitor"
-            android:label="@string/title_activity_monitor" >
+            android:name=".Lobby"
+            android:label="@string/title_activity_lobby"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".ChartDemo"
-            android:label="AChartEngine demo" >
+            android:name=".Steps"
+            android:label="@string/title_activity_steps"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.example.justinkhoo.wristbandapp.chart.XYChartBuilder" />
-        <activity android:name="com.example.justinkhoo.wristbandapp.chart.PieChartBuilder" />
-        <activity android:name="org.achartengine.GraphicalActivity" />
-        <activity android:name=".GeneratedChartDemo" />
-
+        <activity
+            android:name=".Temperatures"
+            android:label="@string/title_activity_temperatures"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".Heartrate"
+            android:label="OneBand"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>

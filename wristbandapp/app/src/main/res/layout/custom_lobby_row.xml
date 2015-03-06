@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lobbyItemTextView"
+    android:textColor="#000000"
+    android:padding="8sp"
+    android:layout_width="fill_parent"
+    android:gravity="center"
+    android:textSize="32sp"
+    android:layout_height="fill_parent"/>
