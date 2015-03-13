@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -25,6 +26,12 @@ import android.widget.Toast;
 
 import com.example.justinkhoo.wristbandapp.chart.SensorValuesChart;
 
+import org.achartengine.ChartFactory;
+import org.achartengine.chart.BarChart;
+import org.achartengine.model.CategorySeries;
+import org.achartengine.model.XYMultipleSeriesDataset;
+import org.achartengine.renderer.SimpleSeriesRenderer;
+import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
@@ -33,10 +40,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Random;
 
 
 public class activity1 extends Activity implements MyAsyncResponse {
-
+    private static final int SERIES_NR = 2;
     private static final int REQUEST_ENABLE_BT = 1;
     BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
@@ -254,12 +262,62 @@ public class activity1 extends Activity implements MyAsyncResponse {
         return a_double;
     }
 
+
+    public XYMultipleSeriesRenderer getBarDemoRenderer() {
+        XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer();
+        renderer.setAxisTitleTextSize(16);
+        renderer.setChartTitleTextSize(20);
+        renderer.setLabelsTextSize(15);
+        renderer.setLegendTextSize(15);
+        renderer.setMargins(new int[] {20, 30, 15, 0});
+        SimpleSeriesRenderer r = new SimpleSeriesRenderer();
+        r.setColor(Color.BLUE);
+        renderer.addSeriesRenderer(r);
+        r = new SimpleSeriesRenderer();
+        r.setColor(Color.GREEN);
+        renderer.addSeriesRenderer(r);
+        return renderer;
+    }
+    private void setChartSettings(XYMultipleSeriesRenderer renderer) {
+        renderer.setChartTitle("Chart demo");
+        renderer.setXTitle("x values");
+        renderer.setYTitle("y values");
+        renderer.setXAxisMin(0.5);
+        renderer.setXAxisMax(10.5);
+        renderer.setYAxisMin(0);
+        renderer.setYAxisMax(210);
+    }
+
+    private XYMultipleSeriesDataset getBarDemoDataset() {
+        XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
+        final int nr = 10;
+        Random r = new Random();
+       // for (int i = 0; i < 1; i++) {
+            CategorySeries series = new CategorySeries("Demo series ");
+            for (int k = 0; k < nr; k++) {
+                series.add(100 + r.nextInt() % 100);
+            }
+            dataset.addSeries(series.toXYSeries());
+
+        CategorySeries series1 = new CategorySeries("Demo series ");
+        for (int k = 0; k < nr; k++) {
+            series1.add(0);
+        }
+        dataset.addSeries(series1.toXYSeries());
+        //}
+        return dataset;
+    }
+
     public void goToSensorChart(View view){
         SensorValuesChart1 mychart = new SensorValuesChart1();
 
-        double [] array = toArray(al1);
-        Log.d("arry size is : ", String.valueOf(array.length));
-        Intent i = mychart.execute(this, array);
+//        double [] array = toArray(al1);
+//        Log.d("arry size is : ", String.valueOf(array.length));
+//        Intent i = mychart.execute(this, array);
+//        startActivity(i);
+        XYMultipleSeriesRenderer renderer = getBarDemoRenderer();
+        setChartSettings(renderer);
+        Intent i= ChartFactory.getBarChartIntent(this, getBarDemoDataset(), renderer, BarChart.Type.DEFAULT);
         startActivity(i);
     }
     @Override

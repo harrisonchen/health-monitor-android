@@ -22,7 +22,8 @@
         android:layout_marginTop="8sp"
         android:layout_marginBottom="8sp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="goToTempChart"/>
 
     <TextView
         android:layout_width="wrap_content"
