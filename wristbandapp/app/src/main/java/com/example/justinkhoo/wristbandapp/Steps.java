@@ -1,6 +1,7 @@
 package com.example.justinkhoo.wristbandapp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
@@ -33,6 +34,12 @@ public class Steps extends Activity {
                 stepsTextView.setText("0");
             }
         });
+    }
+
+    public void goToStepGoals(View view) {
+        Intent intent = new Intent(this, StepGoals.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
     }
 
     @Override
