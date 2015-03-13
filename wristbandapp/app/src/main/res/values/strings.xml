@@ -18,5 +18,6 @@
     <string name="title_activity_steps">Steps</string>
     <string name="title_activity_temperatures">Temperatures</string>
     <string name="title_activity_heartrate">Heartrate</string>
+    <string name="title_activity_step_goals">StepGoals</string>
 
 </resources>

@@ -65,6 +65,10 @@
             android:label="OneBand"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name=".StepGoals"
+            android:label="@string/title_activity_step_goals" >
+        </activity>
     </application>
 
 </manifest>

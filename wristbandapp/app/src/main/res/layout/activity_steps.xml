@@ -46,6 +46,7 @@
         android:textColor="#FFFFFF"
         android:padding="14sp"
         android:width="300sp"
+        android:onClick="goToStepGoals"
         android:layout_above="@+id/statisticsButton"
         android:layout_alignLeft="@+id/statisticsButton"
         android:layout_alignStart="@+id/statisticsButton" />

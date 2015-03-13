@@ -46,6 +46,12 @@ public class Steps extends Activity {
         });
     }
 
+    public void goToStepGoals(View view) {
+        Intent intent = new Intent(this, StepGoals.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
