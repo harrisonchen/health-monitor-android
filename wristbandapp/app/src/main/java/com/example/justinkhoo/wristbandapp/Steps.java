@@ -78,11 +78,18 @@ public class Steps extends Activity {
     }
     public XYMultipleSeriesRenderer getBarDemoRenderer() {
         XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer();
-        renderer.setAxisTitleTextSize(16);
-        renderer.setChartTitleTextSize(20);
-        renderer.setLabelsTextSize(15);
-        renderer.setLegendTextSize(15);
+        renderer.setAxisTitleTextSize(20);
+        renderer.setChartTitleTextSize(24);
+        renderer.setLabelsTextSize(20);
+        renderer.setLegendTextSize(20);
+        renderer.setLabelsColor(Color.RED);
         renderer.setMargins(new int[] {20, 30, 15, 0});
+
+        renderer.setApplyBackgroundColor(true);
+        renderer.setBackgroundColor(Color.WHITE); //inside
+        renderer.setMarginsColor(Color.WHITE);  //outside
+        renderer.setPanEnabled(true,false);    //scroll
+        renderer.setZoomEnabled(false,false); //zoom
         SimpleSeriesRenderer r = new SimpleSeriesRenderer();
         r.setColor(Color.BLUE);
         renderer.addSeriesRenderer(r);
@@ -92,11 +99,11 @@ public class Steps extends Activity {
         return renderer;
     }
     private void setChartSettings(XYMultipleSeriesRenderer renderer) {
-        renderer.setChartTitle("Chart demo");
-        renderer.setXTitle("x values");
-        renderer.setYTitle("y values");
+        renderer.setChartTitle("");
+        renderer.setXTitle("temperature");
+        renderer.setYTitle("time");
         renderer.setXAxisMin(0.5);
-        renderer.setXAxisMax(10.5);
+        renderer.setXAxisMax(20.5);
         renderer.setYAxisMin(0);
         renderer.setYAxisMax(210);
     }
@@ -106,13 +113,13 @@ public class Steps extends Activity {
         final int nr = 10;
         Random r = new Random();
         // for (int i = 0; i < 1; i++) {
-        CategorySeries series = new CategorySeries("Demo series ");
+        CategorySeries series = new CategorySeries(""); //"Demo series"
         for (int k = 0; k < nr; k++) {
             series.add(60 + r.nextInt() % 20);
         }
         dataset.addSeries(series.toXYSeries());
 
-        CategorySeries series1 = new CategorySeries("Demo series ");
+        CategorySeries series1 = new CategorySeries("");
         for (int k = 0; k < nr; k++) {
             series.add(60 + r.nextInt() % 20);
         }
