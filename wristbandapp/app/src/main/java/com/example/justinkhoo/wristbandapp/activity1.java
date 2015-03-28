@@ -3,7 +3,6 @@ package com.example.justinkhoo.wristbandapp;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -24,8 +23,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.justinkhoo.wristbandapp.chart.SensorValuesChart;
-
 import org.achartengine.ChartFactory;
 import org.achartengine.chart.BarChart;
 import org.achartengine.model.CategorySeries;
@@ -39,7 +36,6 @@ import org.apache.http.message.BasicNameValuePair;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.Random;
 
 
@@ -70,7 +66,7 @@ public class activity1 extends Activity implements MyAsyncResponse {
                 // Add the name and address to an array adapter to show in a ListView
                 deviceArrayAdapter.add(device.getName() + "\n" + device.getAddress());
                 deviceArrayAdapter.notifyDataSetChanged();
-                Log.d("BLUETOOTH PAIRING: ", device.getName());
+                //Log.d("BLUETOOTH PAIRING: ", device.getName());
             }
         }
     };
@@ -118,7 +114,7 @@ public class activity1 extends Activity implements MyAsyncResponse {
 
         deviceList = new ArrayList<BluetoothDevice>();
 
-        listView = (ListView) findViewById(R.id.listView);
+        listView = (ListView) findViewById(R.id.deviceArrayAdapter);
         deviceArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         listView.setAdapter(deviceArrayAdapter);
 

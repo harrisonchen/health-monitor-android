@@ -6,7 +6,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context=".activity1">
+    tools:context=".activity1"
+    >
 
     <View android:id="@+id/fakeView"
         android:layout_width="0dp"
@@ -44,7 +45,7 @@
         android:layout_height="wrap_content"
         android:text="Status"
         android:id="@+id/status_button"
-        android:layout_above="@+id/listView"
+        android:layout_above="@+id/deviceArrayAdapter"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:onClick="goToMonitor"
@@ -111,4 +112,13 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:onClick="goToSensorChart" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/deviceArrayAdapter"
+        android:layout_below="@+id/bluetoothButton"
+        android:layout_above="@+id/testview1"
+        android:layout_alignRight="@+id/status_button"
+        android:layout_alignEnd="@+id/status_button" />
 </RelativeLayout>
