@@ -11,6 +11,23 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import android.app.Activity;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.provider.Settings;
+import android.app.Activity;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Bundle;
+import android.app.Notification;
+import android.support.v4.app.NotificationCompat;
+
 import org.achartengine.ChartFactory;
 import org.achartengine.chart.BarChart;
 import org.achartengine.model.CategorySeries;
@@ -127,7 +144,63 @@ public class Steps extends Activity {
         //}
         return dataset;
     }
-
+//    public void sendNotification(View view) {
+//
+//        // Use NotificationCompat.Builder to set up our notification.
+//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+//
+//        //icon appears in device notification bar and right hand corner of notification
+//       // builder.setSmallIcon(R.drawable.ic_stat_notification);
+//
+//        // This intent is fired when notification is clicked
+//        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://javatechig.com/"));
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+//
+//        // Set the intent that will fire when the user taps the notification.
+//        builder.setContentIntent(pendingIntent);
+//
+//        // Large icon appears on the left of the notification
+//        builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher));
+//
+//        // Content title, which appears in large type at the top of the notification
+//        builder.setContentTitle("Notifications Title");
+//
+//        // Content text, which appears in smaller text below the title
+//        builder.setContentText("Your notification content here.");
+//
+//        // The subtext, which appears under the text on newer devices.
+//        // This will show-up in the devices with Android 4.2 and above only
+//        builder.setSubText("Tap to view documentation about notifications.");
+//
+//        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+//
+//        // Will display the notification in the notification bar
+//        notificationManager.notify(1, builder.build());
+//    }
+// Add app running notification
+//        private void addNotification() {
+//
+//            NotificationCompat.Builder builder =
+//                    new NotificationCompat.Builder(this)
+//                            .setSmallIcon(R.drawable.ic_launcher)
+//                            .setContentTitle("Notifications Example")
+//                            .setContentText("This is a test notification");
+//
+//            Intent notificationIntent = new Intent(this, Steps.class);
+//            PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
+//                    PendingIntent.FLAG_UPDATE_CURRENT);
+//            builder.setContentIntent(contentIntent);
+//
+//            // Add as notification
+//            NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//            manager.notify(1, builder.build());
+//        }
+//
+//            // Remove notification
+//            private void removeNotification() {
+//                NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//                manager.cancel(2);
+//            }
     public void goToStepChart(View view){
         SensorValuesChart1 mychart = new SensorValuesChart1();
 
