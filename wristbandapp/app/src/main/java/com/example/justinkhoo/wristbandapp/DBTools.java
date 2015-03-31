@@ -14,28 +14,45 @@ public class DBTools extends SQLiteOpenHelper {
 
     public DBTools(Context applicationContext) {
 
-        super(applicationContext, "h2j-health.db", null, 1);
+        super(applicationContext, "oneband.db", null, 1);
     }
 
     public void onCreate(SQLiteDatabase database) {
 
-        String accelerometerCreateQuery =
-                "CREATE TABLE acceleromter(id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "x INTEGER DEFAULT 0, y INTEGER DEFAULT 0, z INTEGER DEFAULT 0)";
+        String motionCreateQuery =
+                "CREATE TABLE motion(id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "x REAL DEFAULT 0, y REAL DEFAULT 0, z REAL DEFAULT 0)";
 
-        database.execSQL(accelerometerCreateQuery);
+        String stepsCreateQuery =
+                "CREATE TABLE steps(id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "count INTEGER DEFAULT 0)";
+
+        String heartbeatCreateQuery =
+                "CREATE TABLE heartbeat(id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "beats_per_minute INTEGER DEFAULT 0, beats_per_second INTEGER DEFAULT 0)";
+
+        String temperatureCreateQuery =
+                "CREATE TABLE temperature(id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "fahrenheit REAL DEFAULT 0.0)";
+
+        database.execSQL(motionCreateQuery);
+        database.execSQL(stepsCreateQuery);
+        database.execSQL(heartbeatCreateQuery);
+        database.execSQL(temperatureCreateQuery);
     }
 
     public void onUpgrade(SQLiteDatabase database, int version_old, int current_version) {
 
-        String query = "DROP TABLE IF EXISTS h2j-health";
+        String query = "DROP TABLE IF EXISTS oneband";
 
         database.execSQL(query);
 
         onCreate(database);
     }
 
-    public void addAccel(HashMap<String, String> queryValues) {
+    /* Motion Functions */
+
+    public void addMotion(HashMap<String, String> queryValues) {
 
         SQLiteDatabase database = this.getWritableDatabase();
 
@@ -45,30 +62,30 @@ public class DBTools extends SQLiteOpenHelper {
         values.put("y", queryValues.get("y"));
         values.put("z", queryValues.get("z"));
 
-        database.insert("accelerometer", null, values);
+        database.insert("motion", null, values);
 
         database.close();
     }
 
 
-    public void deleteAccel(String id) {
+    public void deleteMotion(String id) {
 
         SQLiteDatabase database = this.getWritableDatabase();
 
-        String deleteQuery = "DELETE FROM accelerometer WHERE id='" + id + "'";
+        String deleteQuery = "DELETE FROM motion WHERE id='" + id + "'";
 
         database.execSQL(deleteQuery);
 
         database.close();
     }
 
-    public ArrayList<HashMap<String, String>> getAccel() {
+    public ArrayList<HashMap<String, String>> getMotion() {
 
-        ArrayList<HashMap<String, String>> accelArrayList;
+        ArrayList<HashMap<String, String>> motionArrayList;
 
-        accelArrayList = new ArrayList<HashMap<String, String>>();
+        motionArrayList = new ArrayList<HashMap<String, String>>();
 
-        String selectQuery = "SELECT * FROM accelerometer ORDER BY task_id DESC LIMIT 50";
+        String selectQuery = "SELECT * FROM motion ORDER BY id DESC LIMIT 50";
 
         SQLiteDatabase database = this.getReadableDatabase();
 
@@ -77,20 +94,187 @@ public class DBTools extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
 
             do {
+                HashMap<String, String> motionMap = new HashMap<String, String>();
 
-                HashMap<String, String> accelMap = new HashMap<String, String>();
+                motionMap.put("id", cursor.getString(0));
+                motionMap.put("x", cursor.getString(1));
+                motionMap.put("y", cursor.getString(2));
+                motionMap.put("z", cursor.getString(3));
 
-                accelMap.put("id", cursor.getString(0));
-                accelMap.put("x", cursor.getString(2));
-                accelMap.put("y", cursor.getString(3));
-                accelMap.put("z", cursor.getString(4));
-
-                accelArrayList.add(accelMap);
+                motionArrayList.add(motionMap);
             } while (cursor.moveToNext());
         }
 
         database.close();
 
-        return accelArrayList;
+        return motionArrayList;
+    }
+
+    /* Steps Functions */
+
+    public void addSteps(HashMap<String, String> queryValues) {
+
+        SQLiteDatabase database = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put("count", queryValues.get("step_count"));
+
+        database.insert("steps", null, values);
+
+        database.close();
+    }
+
+
+    public void deleteSteps(String id) {
+
+        SQLiteDatabase database = this.getWritableDatabase();
+
+        String deleteQuery = "DELETE FROM steps WHERE id='" + id + "'";
+
+        database.execSQL(deleteQuery);
+
+        database.close();
+    }
+
+    public ArrayList<HashMap<String, String>> getSteps() {
+
+        ArrayList<HashMap<String, String>> arrayList;
+
+        arrayList = new ArrayList<HashMap<String, String>>();
+
+        String selectQuery = "SELECT * FROM steps ORDER BY id DESC LIMIT 50";
+
+        SQLiteDatabase database = this.getReadableDatabase();
+
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+
+            do {
+                HashMap<String, String> map = new HashMap<String, String>();
+
+                map.put("id", cursor.getString(0));
+                map.put("step_count", cursor.getString(1));
+
+                arrayList.add(map);
+            } while (cursor.moveToNext());
+        }
+
+        database.close();
+
+        return arrayList;
+    }
+
+    /* Heartbeat Functions */
+
+    public void addHeartbeat(HashMap<String, String> queryValues) {
+
+        SQLiteDatabase database = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put("beats_per_minute", queryValues.get("beats_per_minute"));
+
+        database.insert("heartbeat", null, values);
+
+        database.close();
+    }
+
+
+    public void deleteHeartbeat(String id) {
+
+        SQLiteDatabase database = this.getWritableDatabase();
+
+        String deleteQuery = "DELETE FROM heartbeat WHERE id='" + id + "'";
+
+        database.execSQL(deleteQuery);
+
+        database.close();
+    }
+
+    public ArrayList<HashMap<String, String>> getHeartbeat() {
+
+        ArrayList<HashMap<String, String>> arrayList;
+
+        arrayList = new ArrayList<HashMap<String, String>>();
+
+        String selectQuery = "SELECT * FROM heartbeat ORDER BY id DESC LIMIT 50";
+
+        SQLiteDatabase database = this.getReadableDatabase();
+
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+
+            do {
+                HashMap<String, String> map = new HashMap<String, String>();
+
+                map.put("id", cursor.getString(0));
+                map.put("beats_per_minute", cursor.getString(1));
+
+                arrayList.add(map);
+            } while (cursor.moveToNext());
+        }
+
+        database.close();
+
+        return arrayList;
+    }
+
+    /* Temperature Functions */
+
+    public void addTemperature(HashMap<String, String> queryValues) {
+
+        SQLiteDatabase database = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put("fahrenheit", queryValues.get("fahrenheit"));
+
+        database.insert("temperature", null, values);
+
+        database.close();
+    }
+
+
+    public void deleteTemperature(String id) {
+
+        SQLiteDatabase database = this.getWritableDatabase();
+
+        String deleteQuery = "DELETE FROM temperature WHERE id='" + id + "'";
+
+        database.execSQL(deleteQuery);
+
+        database.close();
+    }
+
+    public ArrayList<HashMap<String, String>> getTemperature() {
+
+        ArrayList<HashMap<String, String>> arrayList;
+
+        arrayList = new ArrayList<HashMap<String, String>>();
+
+        String selectQuery = "SELECT * FROM temperature ORDER BY id DESC LIMIT 50";
+
+        SQLiteDatabase database = this.getReadableDatabase();
+
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+
+            do {
+                HashMap<String, String> map = new HashMap<String, String>();
+
+                map.put("id", cursor.getString(0));
+                map.put("fahrenheit", cursor.getString(1));
+
+                arrayList.add(map);
+            } while (cursor.moveToNext());
+        }
+
+        database.close();
+
+        return arrayList;
     }
 }
