@@ -69,6 +69,10 @@
             android:name=".StepGoals"
             android:label="@string/title_activity_step_goals" >
         </activity>
+        <activity
+            android:name=".DBTest"
+            android:label="@string/title_activity_dbtest" >
+        </activity>
     </application>
 
 </manifest>

@@ -21,7 +21,7 @@ public class DBTools extends SQLiteOpenHelper {
 
         String motionCreateQuery =
                 "CREATE TABLE motion(id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "x INTEGER DEFAULT 0, y INTEGER DEFAULT 0, z INTEGER DEFAULT 0)";
+                "x REAL DEFAULT 0, y REAL DEFAULT 0, z REAL DEFAULT 0)";
 
         String stepsCreateQuery =
                 "CREATE TABLE steps(id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -174,7 +174,7 @@ public class DBTools extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
 
-        values.put("beats_per_minute", queryValues.get("step_count"));
+        values.put("beats_per_minute", queryValues.get("beats_per_minute"));
 
         database.insert("heartbeat", null, values);
 
@@ -230,7 +230,7 @@ public class DBTools extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
 
-        values.put("fahrenheit", queryValues.get("step_count"));
+        values.put("fahrenheit", queryValues.get("fahrenheit"));
 
         database.insert("temperature", null, values);
 
