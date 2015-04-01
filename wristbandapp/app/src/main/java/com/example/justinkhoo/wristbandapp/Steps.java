@@ -21,6 +21,7 @@ import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 
+import java.util.HashMap;
 import java.util.Random;
 
 
@@ -28,7 +29,6 @@ import android.support.v4.app.NotificationCompat;
 
 
 public class Steps extends Activity {
-
     TextView stepsTextView;
     Button clearButton;
 
@@ -94,7 +94,7 @@ public class Steps extends Activity {
         renderer.setApplyBackgroundColor(true);
         renderer.setBackgroundColor(Color.WHITE); //inside
         renderer.setMarginsColor(Color.WHITE);  //outside
-        renderer.setPanEnabled(true,false);    //scroll
+        renderer.setPanEnabled(false, false);    //scroll
         renderer.setZoomEnabled(false,false); //zoom
         SimpleSeriesRenderer r = new SimpleSeriesRenderer();
         r.setColor(Color.BLUE);

@@ -72,8 +72,8 @@ public class Heartrate extends Activity {
         renderer.setApplyBackgroundColor(true);
         renderer.setBackgroundColor(Color.WHITE); //inside
         renderer.setMarginsColor(Color.WHITE);  //outside
-        renderer.setPanEnabled(true,false);    //scroll
-        renderer.setZoomEnabled(false,false); //zoom
+        renderer.setPanEnabled(false ,false);    //scroll
+        renderer.setZoomEnabled(false ,false); //zoom
         SimpleSeriesRenderer r = new SimpleSeriesRenderer();
         r.setColor(Color.BLUE);
         renderer.addSeriesRenderer(r);
