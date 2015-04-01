@@ -117,7 +117,7 @@ public class Temperatures extends Activity {
         CategorySeries series1 = new CategorySeries("");//Demo series
         for (int k = 0; k < nr; k++) {
 //            series.add(60 + r.nextInt() % 20);
-            series.add(k);
+            series.add(0);
         }
         dataset.addSeries(series1.toXYSeries());
         //}

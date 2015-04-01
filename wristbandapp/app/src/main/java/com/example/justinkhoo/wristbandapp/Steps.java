@@ -23,6 +23,7 @@ import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -41,6 +42,11 @@ public class Steps extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_steps);
+        for(int i = 50; i <= 100; i = i + 2) {
+            HashMap<String, String> map = new HashMap<String, String>();
+            map.put("step_count", String.valueOf(i));
+            dbtools.addSteps(map);
+        }
 
         sharedPreferences = this.getSharedPreferences("com.example.justinkhoo.wristbandapp", Context.MODE_PRIVATE);
 
@@ -111,7 +117,7 @@ public class Steps extends Activity {
         renderer.setApplyBackgroundColor(true);
         renderer.setBackgroundColor(Color.WHITE); //inside
         renderer.setMarginsColor(Color.WHITE);  //outside
-        renderer.setPanEnabled(false, false);    //scroll
+        renderer.setPanEnabled(false ,false);    //scroll
         renderer.setZoomEnabled(false,false); //zoom
         SimpleSeriesRenderer r = new SimpleSeriesRenderer();
         r.setColor(Color.BLUE);
@@ -122,11 +128,11 @@ public class Steps extends Activity {
         return renderer;
     }
     private void setChartSettings(XYMultipleSeriesRenderer renderer) {
-        renderer.setChartTitle("");
-        renderer.setXTitle("temperature");
+        renderer.setChartTitle("Steps Counter");
+        renderer.setXTitle("steps");
         renderer.setYTitle("time");
         renderer.setXAxisMin(0.5);
-        renderer.setXAxisMax(20.5);
+        renderer.setXAxisMax(10.5);
         renderer.setYAxisMin(0);
         renderer.setYAxisMax(210);
     }
@@ -136,15 +142,20 @@ public class Steps extends Activity {
         final int nr = 10;
         Random r = new Random();
         // for (int i = 0; i < 1; i++) {
-        CategorySeries series = new CategorySeries(""); //"Demo series"
+        CategorySeries series = new CategorySeries(""); //Demo series
+        ArrayList<String> al = new ArrayList<String>();
         for (int k = 0; k < nr; k++) {
-            series.add(60 + r.nextInt() % 20);
+            series.add(Double.parseDouble(dbtools.getSteps().get(k).get("step_count")));
+//             }else{
+//                 series.add(0);
+//             }
         }
         dataset.addSeries(series.toXYSeries());
 
-        CategorySeries series1 = new CategorySeries("");
+        CategorySeries series1 = new CategorySeries("");//Demo series
         for (int k = 0; k < nr; k++) {
-            series.add(60 + r.nextInt() % 20);
+//            series.add(60 + r.nextInt() % 20);
+            series.add(0);
         }
         dataset.addSeries(series1.toXYSeries());
         //}
