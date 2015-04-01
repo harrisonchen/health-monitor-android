@@ -1,6 +1,9 @@
 package com.example.justinkhoo.wristbandapp;
 
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -19,6 +22,9 @@ import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 
 import java.util.Random;
+
+
+import android.support.v4.app.NotificationCompat;
 
 
 public class Steps extends Activity {
@@ -78,11 +84,18 @@ public class Steps extends Activity {
     }
     public XYMultipleSeriesRenderer getBarDemoRenderer() {
         XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer();
-        renderer.setAxisTitleTextSize(16);
-        renderer.setChartTitleTextSize(20);
-        renderer.setLabelsTextSize(15);
-        renderer.setLegendTextSize(15);
+        renderer.setAxisTitleTextSize(20);
+        renderer.setChartTitleTextSize(24);
+        renderer.setLabelsTextSize(20);
+        renderer.setLegendTextSize(20);
+        renderer.setLabelsColor(Color.RED);
         renderer.setMargins(new int[] {20, 30, 15, 0});
+
+        renderer.setApplyBackgroundColor(true);
+        renderer.setBackgroundColor(Color.WHITE); //inside
+        renderer.setMarginsColor(Color.WHITE);  //outside
+        renderer.setPanEnabled(true,false);    //scroll
+        renderer.setZoomEnabled(false,false); //zoom
         SimpleSeriesRenderer r = new SimpleSeriesRenderer();
         r.setColor(Color.BLUE);
         renderer.addSeriesRenderer(r);
@@ -92,11 +105,11 @@ public class Steps extends Activity {
         return renderer;
     }
     private void setChartSettings(XYMultipleSeriesRenderer renderer) {
-        renderer.setChartTitle("Chart demo");
-        renderer.setXTitle("x values");
-        renderer.setYTitle("y values");
+        renderer.setChartTitle("");
+        renderer.setXTitle("temperature");
+        renderer.setYTitle("time");
         renderer.setXAxisMin(0.5);
-        renderer.setXAxisMax(10.5);
+        renderer.setXAxisMax(20.5);
         renderer.setYAxisMin(0);
         renderer.setYAxisMax(210);
     }
@@ -106,19 +119,44 @@ public class Steps extends Activity {
         final int nr = 10;
         Random r = new Random();
         // for (int i = 0; i < 1; i++) {
-        CategorySeries series = new CategorySeries("Demo series ");
+        CategorySeries series = new CategorySeries(""); //"Demo series"
         for (int k = 0; k < nr; k++) {
             series.add(60 + r.nextInt() % 20);
         }
         dataset.addSeries(series.toXYSeries());
 
-        CategorySeries series1 = new CategorySeries("Demo series ");
+        CategorySeries series1 = new CategorySeries("");
         for (int k = 0; k < nr; k++) {
             series.add(60 + r.nextInt() % 20);
         }
         dataset.addSeries(series1.toXYSeries());
         //}
         return dataset;
+    }
+
+    // Add app running notification
+    public void addNotification(View view) {
+
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.ic_launcher)
+                        .setContentTitle("Notifications Example")
+                        .setContentText("This is a test notification");
+
+        Intent notificationIntent = new Intent(this, Steps.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(contentIntent);
+
+        // Add as notification
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(1, builder.build());
+     }
+
+    // Remove notification
+    private void removeNotification() {
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.cancel(2);
     }
 
     public void goToStepChart(View view){

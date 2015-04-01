@@ -62,11 +62,18 @@ public class Heartrate extends Activity {
     }
     public XYMultipleSeriesRenderer getBarDemoRenderer() {
         XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer();
-        renderer.setAxisTitleTextSize(16);
-        renderer.setChartTitleTextSize(20);
-        renderer.setLabelsTextSize(15);
-        renderer.setLegendTextSize(15);
+        renderer.setAxisTitleTextSize(20);
+        renderer.setChartTitleTextSize(24);
+        renderer.setLabelsTextSize(20);
+        renderer.setLegendTextSize(20);
+        renderer.setLabelsColor(Color.RED);
         renderer.setMargins(new int[] {20, 30, 15, 0});
+
+        renderer.setApplyBackgroundColor(true);
+        renderer.setBackgroundColor(Color.WHITE); //inside
+        renderer.setMarginsColor(Color.WHITE);  //outside
+        renderer.setPanEnabled(true,false);    //scroll
+        renderer.setZoomEnabled(false,false); //zoom
         SimpleSeriesRenderer r = new SimpleSeriesRenderer();
         r.setColor(Color.BLUE);
         renderer.addSeriesRenderer(r);
