@@ -1,6 +1,7 @@
 package com.example.justinkhoo.wristbandapp;
 
 import android.app.Activity;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -154,21 +155,43 @@ public class Steps extends Activity {
     // Add app running notification
     public void addNotification(View view) {
 
+        buildNotification("OneBand", "You have reached your step goal!", Steps.class, 1);
+        buildNotification("OneBand", "You should cool down", Temperatures.class, 2);
+
+//        NotificationCompat.Builder builder =
+//                new NotificationCompat.Builder(this)
+//                        .setSmallIcon(R.drawable.ic_launcher)
+//                        .setContentTitle("OneBand Health")
+//                        .setContentText("You have reached your step goal!");
+//
+//        Intent notificationIntent = new Intent(this, Steps.class);
+//        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
+//                PendingIntent.FLAG_UPDATE_CURRENT);
+//        builder.setContentIntent(contentIntent);
+//
+//        // Add as notification
+//        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//        manager.notify(1, builder.build());
+     }
+
+    public void buildNotification(String title, String content, Class classname, Integer id) {
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_launcher)
-                        .setContentTitle("Notifications Example")
-                        .setContentText("This is a test notification");
+                        .setContentTitle(title)
+                        .setContentText(content)
+                        .setAutoCancel(true)
+                        .setDefaults(Notification.DEFAULT_SOUND);
 
-        Intent notificationIntent = new Intent(this, Steps.class);
+        Intent notificationIntent = new Intent(this, classname);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(contentIntent);
 
         // Add as notification
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(1, builder.build());
-     }
+        manager.notify(id, builder.build());
+    }
 
     // Remove notification
     private void removeNotification() {
