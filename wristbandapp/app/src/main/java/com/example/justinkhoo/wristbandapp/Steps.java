@@ -31,7 +31,6 @@ import android.support.v4.app.NotificationCompat;
 
 
 public class Steps extends Activity {
-
     TextView stepsTextView;
     Button clearButton;
     DBTools dbtools = new DBTools(this);
@@ -112,7 +111,7 @@ public class Steps extends Activity {
         renderer.setApplyBackgroundColor(true);
         renderer.setBackgroundColor(Color.WHITE); //inside
         renderer.setMarginsColor(Color.WHITE);  //outside
-        renderer.setPanEnabled(true,false);    //scroll
+        renderer.setPanEnabled(false, false);    //scroll
         renderer.setZoomEnabled(false,false); //zoom
         SimpleSeriesRenderer r = new SimpleSeriesRenderer();
         r.setColor(Color.BLUE);

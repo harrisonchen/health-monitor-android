@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,16 +15,24 @@ import org.achartengine.model.CategorySeries;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
-
+import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 
 public class Temperatures extends Activity {
 
+    DBTools dbTools = new DBTools(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_temperatures);
+        for(int i = 50; i <= 100; i = i + 2) {
+            HashMap<String, String> map = new HashMap<String, String>();
+            map.put("fahrenheit", String.valueOf(i));
+            dbTools.addTemperature(map);
+        }
     }
 
     @Override
@@ -62,7 +71,7 @@ public class Temperatures extends Activity {
         renderer.setApplyBackgroundColor(true);
         renderer.setBackgroundColor(Color.WHITE); //inside
         renderer.setMarginsColor(Color.WHITE);  //outside
-        renderer.setPanEnabled(true,false);    //scroll
+        renderer.setPanEnabled(false ,false);    //scroll
         renderer.setZoomEnabled(false,false); //zoom
         SimpleSeriesRenderer r = new SimpleSeriesRenderer();
         r.setColor(Color.BLUE);
@@ -73,9 +82,9 @@ public class Temperatures extends Activity {
         return renderer;
     }
     private void setChartSettings(XYMultipleSeriesRenderer renderer) {
-        renderer.setChartTitle("Chart demo");
-        renderer.setXTitle("x values");
-        renderer.setYTitle("y values");
+        renderer.setChartTitle("Temperature");
+        renderer.setXTitle("time");
+        renderer.setYTitle("farenheit");
         renderer.setXAxisMin(0.5);
         renderer.setXAxisMax(10.5);
         renderer.setYAxisMin(0);
@@ -87,15 +96,28 @@ public class Temperatures extends Activity {
         final int nr = 10;
         Random r = new Random();
         // for (int i = 0; i < 1; i++) {
-        CategorySeries series = new CategorySeries("Demo series ");
+        CategorySeries series = new CategorySeries(""); //Demo series
+        ArrayList<String> al = new ArrayList<String>();
+//        int counter = 0;
+//        while(!dbTools.getTemperature().get(counter).get("fahrenheit").equals("")) {
+////            Log.d("testing 1", "" + counter);Log.d("testing 1", "" + counter);Log.d("testing 1", "" + counter);Log.d("testing 1", "" + counter);Log.d("testing 1", "" + counter);
+//            al.add(dbTools.getTemperature().get(counter).get("fahrenheit"));
+//            counter++;
+//        }
         for (int k = 0; k < nr; k++) {
-            series.add(60 + r.nextInt() % 20);
+//            series.add(60 + r.nextInt() % 20);
+//             if(al.get(k) != null){
+                 series.add(Double.parseDouble(dbTools.getTemperature().get(k).get("fahrenheit")));
+//             }else{
+//                 series.add(0);
+//             }
         }
         dataset.addSeries(series.toXYSeries());
 
-        CategorySeries series1 = new CategorySeries("Demo series ");
+        CategorySeries series1 = new CategorySeries("");//Demo series
         for (int k = 0; k < nr; k++) {
-            series.add(60 + r.nextInt() % 20);
+//            series.add(60 + r.nextInt() % 20);
+            series.add(k);
         }
         dataset.addSeries(series1.toXYSeries());
         //}
