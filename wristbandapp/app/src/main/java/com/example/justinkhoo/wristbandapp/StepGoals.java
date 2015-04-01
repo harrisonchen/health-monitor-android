@@ -1,6 +1,8 @@
 package com.example.justinkhoo.wristbandapp;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,16 +19,29 @@ public class StepGoals extends Activity {
     EditText caloriesToLoseEditText;
     Button calculateStepsButton;
 
+    SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_goals);
 
+        sharedPreferences = this.getSharedPreferences("com.example.justinkhoo.wristbandapp", Context.MODE_PRIVATE);
+
         stepsNeededTextView = (TextView) findViewById(R.id.stepsNeededTextView);
         currentWeightEditText = (EditText) findViewById(R.id.currentWeightEditText);
         caloriesToLoseEditText = (EditText) findViewById(R.id.caloriesToLoseEditText);
         calculateStepsButton = (Button) findViewById(R.id.calculateStepsButton);
-        stepsNeededTextView.setVisibility(View.GONE);
+
+        currentWeightEditText.setText(sharedPreferences.getString("currentWeight", ""));
+        caloriesToLoseEditText.setText(sharedPreferences.getString("calorieGoal", ""));
+
+        if(sharedPreferences.contains("stepGoal")) {
+            stepsNeededTextView.setText("You need to walk " + sharedPreferences.getString("stepGoal", "0") + " steps to burn " + sharedPreferences.getString("calorieGoal", "") + " calories.");
+        }
+        else {
+            stepsNeededTextView.setVisibility(View.GONE);
+        }
     }
 
     public void calculateStepsNeeded(View view) {
@@ -40,6 +55,9 @@ public class StepGoals extends Activity {
             double totalStepsNeeded = Math.ceil(Integer.parseInt(caloriesToLoseEditText.getText().toString()) / caloriesPerStep);
             stepsNeededTextView.setText("You need to walk " + totalStepsNeeded + " steps to burn " + caloriesToLoseEditText.getText().toString() + " calories.");
             stepsNeededTextView.setVisibility(View.VISIBLE);
+            sharedPreferences.edit().putString("currentWeight", currentWeightEditText.getText().toString()).apply();
+            sharedPreferences.edit().putString("calorieGoal", caloriesToLoseEditText.getText().toString()).apply();
+            sharedPreferences.edit().putString("stepGoal", String.valueOf(totalStepsNeeded)).apply();
         }
     }
 

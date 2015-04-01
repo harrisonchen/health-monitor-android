@@ -5,9 +5,11 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,15 +33,22 @@ import android.support.v4.app.NotificationCompat;
 public class Steps extends Activity {
     TextView stepsTextView;
     Button clearButton;
+    DBTools dbtools = new DBTools(this);
+
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_steps);
 
+        sharedPreferences = this.getSharedPreferences("com.example.justinkhoo.wristbandapp", Context.MODE_PRIVATE);
+
         Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
 
         stepsTextView = (TextView) findViewById(R.id.stepsTextView);
+
+        stepsTextView.setText(sharedPreferences.getString("stepCount", "0"));
 
         clearButton = (Button) findViewById( R.id.clearButton );
         clearButton.setTypeface(font);
@@ -47,7 +56,15 @@ public class Steps extends Activity {
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(stepsTextView.getText().toString().equals("0")) {
+                    sharedPreferences.edit().putString("stepCount", "0").apply();
+                    return;
+                }
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("step_count", stepsTextView.getText().toString());
+                dbtools.addSteps(map);
                 stepsTextView.setText("0");
+                sharedPreferences.edit().putString("stepCount", "0").apply();
             }
         });
     }
