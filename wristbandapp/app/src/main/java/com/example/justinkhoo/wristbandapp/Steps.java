@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,7 @@ import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 
+import java.util.HashMap;
 import java.util.Random;
 
 
@@ -31,6 +33,7 @@ public class Steps extends Activity {
 
     TextView stepsTextView;
     Button clearButton;
+    DBTools dbtools = new DBTools(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,12 @@ public class Steps extends Activity {
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(stepsTextView.getText() == "0") {
+                    return;
+                }
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("step_count", stepsTextView.getText().toString());
+                dbtools.addSteps(map);
                 stepsTextView.setText("0");
             }
         });
