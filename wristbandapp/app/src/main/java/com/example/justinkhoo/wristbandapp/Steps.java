@@ -154,24 +154,8 @@ public class Steps extends Activity {
 
     // Add app running notification
     public void addNotification(View view) {
-
-        buildNotification("OneBand", "You have reached your step goal!", Steps.class, 1);
-        buildNotification("OneBand", "You should cool down", Temperatures.class, 2);
-
-//        NotificationCompat.Builder builder =
-//                new NotificationCompat.Builder(this)
-//                        .setSmallIcon(R.drawable.ic_launcher)
-//                        .setContentTitle("OneBand Health")
-//                        .setContentText("You have reached your step goal!");
-//
-//        Intent notificationIntent = new Intent(this, Steps.class);
-//        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
-//                PendingIntent.FLAG_UPDATE_CURRENT);
-//        builder.setContentIntent(contentIntent);
-//
-//        // Add as notification
-//        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//        manager.notify(1, builder.build());
+        Log.d("addNotification", "~~~~~~~~~~~~~~~~");
+        startService(new Intent(this, MonitorService.class));
      }
 
     public void buildNotification(String title, String content, Class classname, Integer id) {
