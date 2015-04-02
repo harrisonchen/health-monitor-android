@@ -149,7 +149,7 @@ public class activity1 extends Activity implements MyAsyncResponse {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 bluetoothAdapter.cancelDiscovery();
                 Log.d("Device:", deviceArrayAdapter.getItem(i));
-                connectThread = new ConnectThread(deviceList.get(i), bluetoothAdapter, mHandler);
+                connectThread = new ConnectThread(deviceList.get(i), bluetoothAdapter, mHandler, activity1.this);
                 connectThread.run();
                 bluetoothSocketOpened = true;
             }
