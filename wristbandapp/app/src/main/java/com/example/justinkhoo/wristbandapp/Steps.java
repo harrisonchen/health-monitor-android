@@ -1,6 +1,7 @@
 package com.example.justinkhoo.wristbandapp;
 
 import android.app.Activity;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -169,7 +170,11 @@ public class Steps extends Activity {
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_launcher)
                         .setContentTitle("Notifications Example")
-                        .setContentText("This is a test notification");
+                        .setContentText("This is a test notification")
+                        .setAutoCancel(true)
+                        .setDefaults(Notification.DEFAULT_SOUND)
+                        .setDefaults(Notification.DEFAULT_VIBRATE)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         Intent notificationIntent = new Intent(this, Steps.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
