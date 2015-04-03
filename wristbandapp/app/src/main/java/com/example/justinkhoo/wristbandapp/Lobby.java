@@ -17,14 +17,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
-public class Lobby extends Activity {
+public class Lobby extends Activity implements MyAsyncResponse {
 
     ListView listView;
     String[] items = { "Step Counter", "Heart Rate", "Contact Temperature"};
 
     Button syncButton;
+
+    DBTools dbtools = new DBTools(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +77,14 @@ public class Lobby extends Activity {
         });
     }
 
+    public void syncData(View view) {
+        ArrayList<HashMap<String, String>> data;
+
+        data = dbtools.getTemperature();
+        data = dbtools.getSteps();
+        data = dbtools.getHeartbeat();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -92,5 +103,10 @@ public class Lobby extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void processFinish(String output) {
+
     }
 }

@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -32,13 +33,15 @@ public class ConnectThread extends Thread implements MyAsyncResponse {
     private final BluetoothAdapter bluetoothAdapter;
     private final Handler mHandler;
     DBTools dbtools;
+    SharedPreferences sharedPreferences;
 
     public ConnectedThread connectedThread;
 
     private UUID DEFAULT_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
-
     public ConnectThread(BluetoothDevice device, BluetoothAdapter adapter, Handler handler, Context context) {
+
+        sharedPreferences = context.getSharedPreferences("com.example.justinkhoo.wristbandapp", Context.MODE_PRIVATE);
 
         BluetoothSocket tmp = null;
         bluetoothDevice = device;
@@ -152,7 +155,7 @@ public class ConnectThread extends Thread implements MyAsyncResponse {
 //                        Log.d("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", "");
                     }
                     else{
-                        SystemClock.sleep(4800);
+                        SystemClock.sleep(3000);
                     }
                 }
             } catch (IOException e) {
@@ -162,29 +165,41 @@ public class ConnectThread extends Thread implements MyAsyncResponse {
     }
 
     public void saveData(String data) {
-        String[] dataArray;
+        Log.d("dataArray:", data);
 
+        String[] dataArray;
         dataArray = data.split(":");
         for(int i = 0; i < dataArray.length; i++) {
-            if(dataArray[i].charAt(0) == 'T') {
+//            if(dataArray[i] == null) {
+//                break;
+//            }
+            if(dataArray[i] != null && dataArray[i].charAt(0) == 'T') {
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("fahrenheit", dataArray[i].substring(1));
                 dbtools.addTemperature(map);
+                Log.d("fahrenheit:", dataArray[i].substring(1));
                 break;
+
             }
         }
         for(int i = 0; i < dataArray.length; i++) {
+            if(dataArray[i] == null) {
+                break;
+            }
             if(dataArray[i].charAt(0) == 'S') {
-                HashMap<String, String> map = new HashMap<String, String>();
-                map.put("step_count", dataArray[i].substring(1));
-                dbtools.addSteps(map);
+                sharedPreferences.edit().putString("lastReceivedStepCount", dataArray[i].substring(1)).apply();
+                Log.d("steps:", dataArray[i].substring(1));
                 break;
             }
         }
         for(int i = 0; i < dataArray.length; i++) {
+            if(dataArray[i] == null) {
+                break;
+            }
             if(dataArray[i].charAt(0) == 'H') {
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("beats_per_minute", dataArray[i].substring(1));
+                Log.d("beats_per_minute:", dataArray[i].substring(1));
                 dbtools.addHeartbeat(map);
                 break;
             }

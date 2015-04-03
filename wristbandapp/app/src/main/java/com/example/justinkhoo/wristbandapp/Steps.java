@@ -10,6 +10,9 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,6 +41,9 @@ public class Steps extends Activity {
 
     SharedPreferences sharedPreferences;
 
+    Handler mHandler;
+    StepHandlerThread stepHandlerThread;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,10 +70,22 @@ public class Steps extends Activity {
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("step_count", stepsTextView.getText().toString());
                 dbtools.addSteps(map);
+                sharedPreferences.edit().putString("lastStepCount", sharedPreferences.getString("lastReceivedStepCount", ")")).apply();
                 stepsTextView.setText("0");
                 sharedPreferences.edit().putString("stepCount", "0").apply();
             }
         });
+
+        mHandler = new Handler(Looper.getMainLooper()) {
+            public void handleMessage(Message msg) {
+                String message = msg.getData().getString("message");
+
+                stepsTextView.setText(message);
+            }
+        };
+
+        stepHandlerThread = new StepHandlerThread(mHandler, this);
+        stepHandlerThread.start();
     }
 
     public void goToStepGoals(View view) {
@@ -79,6 +97,7 @@ public class Steps extends Activity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        stepHandlerThread.cancel();
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
     }
 

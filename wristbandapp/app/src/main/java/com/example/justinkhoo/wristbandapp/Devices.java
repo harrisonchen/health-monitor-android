@@ -94,10 +94,10 @@ public class Devices extends Activity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 bluetoothAdapter.cancelDiscovery();
-//                Log.d("Device:", deviceArrayAdapter.getItem(i));
-//                connectThread = new ConnectThread(deviceList.get(i), bluetoothAdapter, mHandler, Devices.this);
-//                connectThread.run();
-//                bluetoothSocketOpened = true;
+                Log.d("Device:", deviceArrayAdapter.getItem(i));
+                connectThread = new ConnectThread(deviceList.get(i), bluetoothAdapter, mHandler, Devices.this);
+                connectThread.run();
+                bluetoothSocketOpened = true;
 
                 Intent intent = new Intent(Devices.this, Lobby.class);
                 startActivity(intent);
