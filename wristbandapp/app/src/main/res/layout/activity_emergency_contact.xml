@@ -1,0 +1,82 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="#FFFFFF"
+    tools:context="com.example.justinkhoo.wristbandapp.chart.EmergencyContact">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:textColor="#000000"
+        android:id="@+id/textView"
+        android:text="Emergency Contacts"
+        android:gravity="center"
+        android:textSize="32dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true" />
+
+    <TextView
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:id="@+id/textView1"
+        android:text="Name"
+        android:gravity="left"
+        android:textSize="24dp"
+        android:layout_alignBaseline="@+id/addname"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView"/>
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addname"
+        android:hint="add contact"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/textView1" />
+
+    <TextView
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:id="@+id/textView2"
+        android:text="Phone"
+        android:gravity="left"
+        android:textSize="24dp"
+        android:layout_alignBaseline="@+id/addphone"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/addname"/>
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addphone"
+        android:hint="add phone"
+        android:layout_below="@+id/addname"
+        android:layout_alignStart="@+id/addname"
+        android:layout_alignEnd="@+id/addname" />
+
+
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Add"
+        android:width="75dp"
+        android:onClick="addToContacts"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/addToContactBtn"
+        android:layout_below="@+id/addphone"/>
+        <!--android:layout_alignEnd="@+id/addname"-->
+
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/contactList"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/addToContactBtn" />
+</RelativeLayout>

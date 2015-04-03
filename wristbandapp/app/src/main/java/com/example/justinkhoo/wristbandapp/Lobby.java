@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -16,6 +17,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.justinkhoo.wristbandapp.chart.EmergencyContact;
+
 import java.util.ArrayList;
 
 
@@ -26,11 +29,13 @@ public class Lobby extends Activity {
 
     Button syncButton;
 
+    MyLocationManager mylocationmanager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lobby);
+        mylocationmanager = new MyLocationManager(Lobby.this);
 
+        setContentView(R.layout.activity_lobby);
         Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
 
         syncButton = (Button) findViewById( R.id.syncButton );
@@ -74,6 +79,23 @@ public class Lobby extends Activity {
         });
     }
 
+    public void goToContact(View view){
+//        Intent intent = new Intent(Lobby.this, EmergencyContact.class);
+//        startActivity(intent);
+//        overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
+
+        Intent smsIntent = new Intent(Intent.ACTION_VIEW);
+        smsIntent.putExtra("address", "3330349");
+        smsIntent.setType("vnd.android-dir/mms-sms");
+
+        startActivity(smsIntent);
+        Log.d(mylocationmanager.getLatitude(), "lati : ");
+        Log.d(mylocationmanager.getLongitude(), "long : ");
+
+
+//        callService mycallService = new callService(Lobby.this);
+//        mycallService.printCoor();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
