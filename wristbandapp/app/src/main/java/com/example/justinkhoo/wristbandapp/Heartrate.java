@@ -17,18 +17,23 @@ import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 
+import java.util.HashMap;
 import java.util.Random;
 
 
 public class Heartrate extends Activity {
 
     TextView heartbeatTextView;
-
+    DBTools dbtools = new DBTools(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_heartrate);
-
+        for(int i = 50; i <= 100; i = i + 2) {
+            HashMap<String, String> map = new HashMap<String, String>();
+            map.put("beats_per_minute", String.valueOf(i));
+            dbtools.addHeartbeat(map);
+        }
         Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
 
         heartbeatTextView = (TextView) findViewById( R.id.heartbeatTextView );
@@ -73,7 +78,7 @@ public class Heartrate extends Activity {
         renderer.setBackgroundColor(Color.WHITE); //inside
         renderer.setMarginsColor(Color.WHITE);  //outside
         renderer.setPanEnabled(false ,false);    //scroll
-        renderer.setZoomEnabled(false ,false); //zoom
+        renderer.setZoomEnabled(false,false); //zoom
         SimpleSeriesRenderer r = new SimpleSeriesRenderer();
         r.setColor(Color.BLUE);
         renderer.addSeriesRenderer(r);
@@ -83,9 +88,9 @@ public class Heartrate extends Activity {
         return renderer;
     }
     private void setChartSettings(XYMultipleSeriesRenderer renderer) {
-        renderer.setChartTitle("Chart demo");
-        renderer.setXTitle("x values");
-        renderer.setYTitle("y values");
+        renderer.setChartTitle("Heart Beats");
+        renderer.setXTitle("time");
+        renderer.setYTitle("bpm");
         renderer.setXAxisMin(0.5);
         renderer.setXAxisMax(10.5);
         renderer.setYAxisMin(0);
@@ -97,15 +102,16 @@ public class Heartrate extends Activity {
         final int nr = 10;
         Random r = new Random();
         // for (int i = 0; i < 1; i++) {
-        CategorySeries series = new CategorySeries("Demo series ");
+        CategorySeries series = new CategorySeries(""); //"Demo series"
         for (int k = 0; k < nr; k++) {
-            series.add(60 + r.nextInt() % 10);
+
+            series.add(Double.parseDouble(dbtools.getHeartbeat().get(k).get("beats_per_minute")));//series.add(60 + r.nextInt() % 10);
         }
         dataset.addSeries(series.toXYSeries());
 
-        CategorySeries series1 = new CategorySeries("Demo series ");
+        CategorySeries series1 = new CategorySeries(""); //"Demo series"
         for (int k = 0; k < nr; k++) {
-            series.add(60 + r.nextInt() % 10);
+            series.add(0);
         }
         dataset.addSeries(series1.toXYSeries());
         //}

@@ -29,6 +29,7 @@ public class DBTest extends Activity {
         HashMap<String, String> steps = new HashMap<String, String>();
         HashMap<String, String> heartbeat = new HashMap<String, String>();
         HashMap<String, String> temperature = new HashMap<String, String>();
+        HashMap<String, String> contact = new HashMap<String, String>();
 
         motion.put("x", "10.1");
         motion.put("y", "20.2");
@@ -40,10 +41,14 @@ public class DBTest extends Activity {
 
         temperature.put("fahrenheit", "60");
 
+        contact.put("name", "Justin");
+        contact.put("phone", "650......");
+
         dbtools.addMotion(motion);
         dbtools.addSteps(steps);
         dbtools.addHeartbeat(heartbeat);
         dbtools.addTemperature(temperature);
+        dbtools.addEmergencyContacts(contact);
 
         listview = (ListView) findViewById(R.id.listView);
         ArrayList<String> items = new ArrayList<String>();
@@ -52,6 +57,8 @@ public class DBTest extends Activity {
         items.add(dbtools.getSteps().get(0).get("step_count"));
         items.add(dbtools.getHeartbeat().get(0).get("beats_per_minute"));
         items.add(dbtools.getTemperature().get(0).get("fahrenheit"));
+        items.add(dbtools.getEmergencyContacts().get(0).get("name"));
+        items.add(dbtools.getEmergencyContacts().get(0).get("phone"));
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.custom_lobby_row, items);
         listview.setAdapter(adapter);

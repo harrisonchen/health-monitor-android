@@ -56,5 +56,24 @@
         android:layout_above="@+id/myHealthButton"
         android:layout_centerHorizontal="true" />
 
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="contact"
+        android:id="@+id/button2"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/orange_button"
+        android:textSize="28sp"
+        android:textColor="#FFFFFF"
+        android:padding="14sp"
+        android:width="300sp"
+        android:onClick="goToContact"
+        android:layout_marginTop="8sp"
+        android:layout_marginBottom="8sp"
+        android:layout_above="@+id/myHealthButton"
+        android:layout_below="@+id/lobbyListView"
+        android:layout_toEndOf="@+id/centerView" />
+
 
 </RelativeLayout>

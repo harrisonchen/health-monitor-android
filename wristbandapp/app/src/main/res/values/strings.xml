@@ -20,5 +20,6 @@
     <string name="title_activity_heartrate">Heartrate</string>
     <string name="title_activity_step_goals">StepGoals</string>
     <string name="title_activity_dbtest">DBTest</string>
+    <string name="title_activity_emergency_contact">EmergencyContact</string>
 
 </resources>

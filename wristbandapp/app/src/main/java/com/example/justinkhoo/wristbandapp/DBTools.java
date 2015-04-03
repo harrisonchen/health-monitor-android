@@ -21,24 +21,32 @@ public class DBTools extends SQLiteOpenHelper {
 
         String motionCreateQuery =
                 "CREATE TABLE motion(id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "x REAL DEFAULT 0, y REAL DEFAULT 0, z REAL DEFAULT 0)";
+                                       "x REAL DEFAULT 0, " +
+                                        "y REAL DEFAULT 0, " +
+                                        "z REAL DEFAULT 0)";
 
         String stepsCreateQuery =
                 "CREATE TABLE steps(id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "count INTEGER DEFAULT 0)";
+                                     "count INTEGER DEFAULT 0)";
 
         String heartbeatCreateQuery =
                 "CREATE TABLE heartbeat(id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "beats_per_minute INTEGER DEFAULT 0, beats_per_second INTEGER DEFAULT 0)";
+                                        "beats_per_minute INTEGER DEFAULT 0, " +
+                                        "beats_per_second INTEGER DEFAULT 0)";
 
         String temperatureCreateQuery =
                 "CREATE TABLE temperature(id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "fahrenheit REAL DEFAULT 0.0)";
+                                           "fahrenheit REAL DEFAULT 0.0)";
 
+        String emergencyContacts =
+                "CREATE TABLE contact(id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "name TEXT," +
+                        "phone TEXT)";
         database.execSQL(motionCreateQuery);
         database.execSQL(stepsCreateQuery);
         database.execSQL(heartbeatCreateQuery);
         database.execSQL(temperatureCreateQuery);
+        database.execSQL(emergencyContacts);
     }
 
     public void onUpgrade(SQLiteDatabase database, int version_old, int current_version) {
@@ -50,8 +58,58 @@ public class DBTools extends SQLiteOpenHelper {
         onCreate(database);
     }
 
-    /* Motion Functions */
+    /* Emergency Contacts */
 
+    public void addEmergencyContacts(HashMap<String, String> contacts){
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put("name", contacts.get("name"));
+        values.put("phone", contacts.get("phone"));
+
+        database.insert("contact", null, values);
+        database.close();
+    }
+    public void deleteEmergencyContacts(String name) {
+
+        SQLiteDatabase database = this.getWritableDatabase();
+
+        String deleteQuery = "DELETE FROM contact WHERE name='" + name + "'";
+
+        database.execSQL(deleteQuery);
+
+        database.close();
+    }
+    public ArrayList<HashMap<String, String>> getEmergencyContacts() {
+
+        ArrayList<HashMap<String, String>> contactsArrayList;
+
+        contactsArrayList = new ArrayList<HashMap<String, String>>();
+
+        String selectQuery = "SELECT * FROM contact ORDER BY id DESC LIMIT 50";
+
+        SQLiteDatabase database = this.getReadableDatabase();
+
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+
+            do {
+                HashMap<String, String> contactsMap = new HashMap<String, String>();
+
+                contactsMap.put("name", cursor.getString(1));
+                contactsMap.put("phone", cursor.getString(2));
+
+                contactsArrayList.add(contactsMap);
+            } while (cursor.moveToNext());
+        }
+
+        database.close();
+
+        return contactsArrayList;
+    }
+
+    /* Motion Functions */
     public void addMotion(HashMap<String, String> queryValues) {
 
         SQLiteDatabase database = this.getWritableDatabase();
@@ -66,8 +124,6 @@ public class DBTools extends SQLiteOpenHelper {
 
         database.close();
     }
-
-
     public void deleteMotion(String id) {
 
         SQLiteDatabase database = this.getWritableDatabase();
@@ -78,7 +134,6 @@ public class DBTools extends SQLiteOpenHelper {
 
         database.close();
     }
-
     public ArrayList<HashMap<String, String>> getMotion() {
 
         ArrayList<HashMap<String, String>> motionArrayList;
@@ -111,7 +166,6 @@ public class DBTools extends SQLiteOpenHelper {
     }
 
     /* Steps Functions */
-
     public void addSteps(HashMap<String, String> queryValues) {
 
         SQLiteDatabase database = this.getWritableDatabase();
@@ -124,8 +178,6 @@ public class DBTools extends SQLiteOpenHelper {
 
         database.close();
     }
-
-
     public void deleteSteps(String id) {
 
         SQLiteDatabase database = this.getWritableDatabase();
@@ -136,7 +188,6 @@ public class DBTools extends SQLiteOpenHelper {
 
         database.close();
     }
-
     public ArrayList<HashMap<String, String>> getSteps() {
 
         ArrayList<HashMap<String, String>> arrayList;
@@ -167,7 +218,6 @@ public class DBTools extends SQLiteOpenHelper {
     }
 
     /* Heartbeat Functions */
-
     public void addHeartbeat(HashMap<String, String> queryValues) {
 
         SQLiteDatabase database = this.getWritableDatabase();
@@ -180,8 +230,6 @@ public class DBTools extends SQLiteOpenHelper {
 
         database.close();
     }
-
-
     public void deleteHeartbeat(String id) {
 
         SQLiteDatabase database = this.getWritableDatabase();
@@ -192,7 +240,6 @@ public class DBTools extends SQLiteOpenHelper {
 
         database.close();
     }
-
     public ArrayList<HashMap<String, String>> getHeartbeat() {
 
         ArrayList<HashMap<String, String>> arrayList;
@@ -223,7 +270,6 @@ public class DBTools extends SQLiteOpenHelper {
     }
 
     /* Temperature Functions */
-
     public void addTemperature(HashMap<String, String> queryValues) {
 
         SQLiteDatabase database = this.getWritableDatabase();
@@ -236,8 +282,6 @@ public class DBTools extends SQLiteOpenHelper {
 
         database.close();
     }
-
-
     public void deleteTemperature(String id) {
 
         SQLiteDatabase database = this.getWritableDatabase();
@@ -248,7 +292,6 @@ public class DBTools extends SQLiteOpenHelper {
 
         database.close();
     }
-
     public ArrayList<HashMap<String, String>> getTemperature() {
 
         ArrayList<HashMap<String, String>> arrayList;
