@@ -20,9 +20,10 @@ import android.widget.TextView;
 import com.example.justinkhoo.wristbandapp.chart.EmergencyContact;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
-public class Lobby extends Activity {
+public class Lobby extends Activity implements MyAsyncResponse {
 
     ListView listView;
     String[] items = { "Step Counter", "Heart Rate", "Contact Temperature"};
@@ -30,6 +31,11 @@ public class Lobby extends Activity {
     Button syncButton;
 
     MyLocationManager mylocationmanager;
+
+    DBTools dbtools = new DBTools(this);
+
+    MonitorThread monitorThread;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +83,17 @@ public class Lobby extends Activity {
                 }
             }
         });
+
+        monitorThread = new MonitorThread(this);
+        monitorThread.start();
+    }
+
+    public void syncData(View view) {
+        ArrayList<HashMap<String, String>> data;
+
+        data = dbtools.getTemperature();
+        data = dbtools.getSteps();
+        data = dbtools.getHeartbeat();
     }
 
     public void goToContact(View view){
@@ -114,5 +131,10 @@ public class Lobby extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void processFinish(String output) {
+
     }
 }

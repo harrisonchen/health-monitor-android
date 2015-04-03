@@ -10,6 +10,9 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,6 +41,9 @@ public class Steps extends Activity {
     DBTools dbtools = new DBTools(this);
 
     SharedPreferences sharedPreferences;
+
+    Handler mHandler;
+    StepHandlerThread stepHandlerThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,10 +76,22 @@ public class Steps extends Activity {
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("step_count", stepsTextView.getText().toString());
                 dbtools.addSteps(map);
+                sharedPreferences.edit().putString("lastStepCount", sharedPreferences.getString("lastReceivedStepCount", ")")).apply();
                 stepsTextView.setText("0");
                 sharedPreferences.edit().putString("stepCount", "0").apply();
             }
         });
+
+        mHandler = new Handler(Looper.getMainLooper()) {
+            public void handleMessage(Message msg) {
+                String message = msg.getData().getString("message");
+
+                stepsTextView.setText(message);
+            }
+        };
+
+        stepHandlerThread = new StepHandlerThread(mHandler, this);
+        stepHandlerThread.start();
     }
 
     public void goToStepGoals(View view) {
@@ -85,6 +103,7 @@ public class Steps extends Activity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        stepHandlerThread.cancel();
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
     }
 
@@ -165,26 +184,29 @@ public class Steps extends Activity {
 
     // Add app running notification
     public void addNotification(View view) {
+        Log.d("addNotification", "~~~~~~~~~~~~~~~~");
+        startService(new Intent(this, MonitorService.class));
+     }
 
+    public void buildNotification(String title, String content, Class classname, Integer id) {
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_launcher)
-                        .setContentTitle("Notifications Example")
-                        .setContentText("This is a test notification")
+                        .setContentTitle(title)
+                        .setContentText(content)
                         .setAutoCancel(true)
                         .setDefaults(Notification.DEFAULT_SOUND)
-                        .setDefaults(Notification.DEFAULT_VIBRATE)
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                        .setDefaults(Notification.DEFAULT_VIBRATE);
 
-        Intent notificationIntent = new Intent(this, Steps.class);
+        Intent notificationIntent = new Intent(this, classname);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(contentIntent);
 
         // Add as notification
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(1, builder.build());
-     }
+        manager.notify(id, builder.build());
+    }
 
     // Remove notification
     private void removeNotification() {

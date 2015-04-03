@@ -95,7 +95,7 @@ public class Devices extends Activity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 bluetoothAdapter.cancelDiscovery();
                 Log.d("Device:", deviceArrayAdapter.getItem(i));
-                connectThread = new ConnectThread(deviceList.get(i), bluetoothAdapter, mHandler);
+                connectThread = new ConnectThread(deviceList.get(i), bluetoothAdapter, mHandler, Devices.this);
                 connectThread.run();
                 bluetoothSocketOpened = true;
 
