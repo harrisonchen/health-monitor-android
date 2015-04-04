@@ -66,7 +66,8 @@ public class MonitorThread extends Thread {
                         .setContentTitle(title)
                         .setContentText(content)
                         .setAutoCancel(true)
-                        .setDefaults(Notification.DEFAULT_SOUND);
+                        .setDefaults(Notification.DEFAULT_SOUND)
+                        .setDefaults(Notification.DEFAULT_VIBRATE);
 
         Intent notificationIntent = new Intent(context, classname);
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent,
