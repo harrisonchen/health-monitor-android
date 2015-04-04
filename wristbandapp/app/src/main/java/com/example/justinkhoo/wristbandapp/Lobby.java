@@ -1,9 +1,12 @@
 package com.example.justinkhoo.wristbandapp;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+//import android.telephony.gsm.SmsManager;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -101,11 +104,15 @@ public class Lobby extends Activity implements MyAsyncResponse {
 //        startActivity(intent);
 //        overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
 
-        Intent smsIntent = new Intent(Intent.ACTION_VIEW);
-        smsIntent.putExtra("address", "3330349");
-        smsIntent.setType("vnd.android-dir/mms-sms");
-
-        startActivity(smsIntent);
+//        Intent smsIntent = new Intent(Intent.ACTION_VIEW);
+//        smsIntent.putExtra("address", "3330349");
+//        smsIntent.setType("vnd.android-dir/mms-sms");
+        sendSms("9092347237", "android sms_send testing", false);
+        sendSms("9092347237", "#wakeup", false);
+        sendSms("9092347237", "muhahahahaha", false);
+        sendSms("6268272363", "wake up!!!", false);
+        sendSms("6268272363", "muhahahahaha", false);
+       // startActivity(smsIntent);
         Log.d(mylocationmanager.getLatitude(), "lati : ");
         Log.d(mylocationmanager.getLongitude(), "long : ");
 
@@ -113,7 +120,39 @@ public class Lobby extends Activity implements MyAsyncResponse {
 //        callService mycallService = new callService(Lobby.this);
 //        mycallService.printCoor();
     }
+    private void sendSms(String phonenumber,String message, boolean isBinary)
+    {
+        SmsManager manager = SmsManager.getDefault();
+        Intent notificationIntent = new Intent(this, Lobby.class);
+        PendingIntent piSend = PendingIntent.getBroadcast(this, 0, notificationIntent, 0); //new Intent(SMS_SENT)
+        PendingIntent piDelivered = PendingIntent.getBroadcast(this, 0, notificationIntent, 0); //new Intent(SMS_DELIVERED)
 
+        if(isBinary)
+        {
+            byte[] data = new byte[message.length()];
+
+            for(int index=0; index<message.length() && index < 160; ++index)
+            {
+                data[index] = (byte)message.charAt(index);
+            }
+            manager.sendDataMessage(phonenumber, null, (short) 121, data,piSend, piDelivered);
+        }
+        else
+        {
+            int length = message.length();
+
+            if(length > 160)
+            {
+                ArrayList<String> messagelist = manager.divideMessage(message);
+
+                manager.sendMultipartTextMessage(phonenumber, null, messagelist, null, null);
+            }
+            else
+            {
+                manager.sendTextMessage(phonenumber, null, message, piSend, piDelivered);
+            }
+        }
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
