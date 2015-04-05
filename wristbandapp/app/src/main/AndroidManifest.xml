@@ -84,7 +84,7 @@
             android:label="@string/title_activity_dbtest" >
         </activity>
         <activity
-            android:name=".chart.EmergencyContact"
+            android:name=".EmergencyContact"
             android:label="@string/title_activity_emergency_contact" >
         </activity>
     </application>

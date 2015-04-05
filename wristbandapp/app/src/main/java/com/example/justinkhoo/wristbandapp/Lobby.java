@@ -10,17 +10,11 @@ import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
-
-import com.example.justinkhoo.wristbandapp.chart.EmergencyContact;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,7 +30,8 @@ public class Lobby extends Activity implements MyAsyncResponse {
     MyLocationManager mylocationmanager;
 
     DBTools dbtools = new DBTools(this);
-
+    String lat = "";
+    String longi = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,15 +97,15 @@ public class Lobby extends Activity implements MyAsyncResponse {
 //        Intent smsIntent = new Intent(Intent.ACTION_VIEW);
 //        smsIntent.putExtra("address", "3330349");
 //        smsIntent.setType("vnd.android-dir/mms-sms");
-        sendSms("9092347237", "android sms_send testing", false);
-        sendSms("9092347237", "#wakeup", false);
-        sendSms("9092347237", "muhahahahaha", false);
-        sendSms("6268272363", "wake up!!!", false);
-        sendSms("6268272363", "muhahahahaha", false);
+//        sendSms("9092347237", "android sms_send testing", false);
+//        sendSms("9092347237", "#wakeup", false);
+//        sendSms("9092347237", "muhahahahaha", false);
+//        sendSms("6268272363", "wake up!!!", false);
+//        sendSms("6268272363", "muhahahahaha", false);
        // startActivity(smsIntent);
+
         Log.d(mylocationmanager.getLatitude(), "lati : ");
         Log.d(mylocationmanager.getLongitude(), "long : ");
-
 
 //        callService mycallService = new callService(Lobby.this);
 //        mycallService.printCoor();

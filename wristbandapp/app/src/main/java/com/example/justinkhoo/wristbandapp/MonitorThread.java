@@ -10,7 +10,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.NotificationCompat;
+import android.telephony.SmsManager;
 import android.util.Log;
+import android.location.LocationListener;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by harrison on 4/3/15.
@@ -19,14 +23,28 @@ public class MonitorThread extends Thread {
 
     SharedPreferences sharedPreferences;
     Context context;
+    DBTools dbtools;
+    MyLocationManager mylocationmanager;
+    String lat;
+    String longi;
 
     public MonitorThread(Context context2) {
         context = context2;
+        dbtools = new DBTools(context);
+        mylocationmanager = new MyLocationManager(context);
+        lat = mylocationmanager.getLatitude();
+        longi = mylocationmanager.getLongitude();
         sharedPreferences = context.getSharedPreferences("com.example.justinkhoo.wristbandapp", Context.MODE_PRIVATE);
     }
 
     public void run() {
         while (true) {
+
+            lat = mylocationmanager.getLatitude();
+            longi = mylocationmanager.getLongitude();
+
+            emergency();
+
             int stepCount = Integer.parseInt(sharedPreferences.getString("stepCount", "0"));
             int lastStepCount = Integer.parseInt(sharedPreferences.getString("lastStepCount", "0"));
             int lastReceivedStepCount = Integer.parseInt(sharedPreferences.getString("lastReceivedStepCount", "0"));
@@ -53,7 +71,11 @@ public class MonitorThread extends Thread {
 
             notMoving = Integer.parseInt(sharedPreferences.getString("notMoving", "0"));
 
-            if(notMoving >= 200) {
+            if(notMoving >= 20) {
+                sharedPreferences.edit().putString("emergencyNow", "1").apply();
+            }
+
+            if(notMoving >= 20) {
                 sharedPreferences.edit().putString("notMoving", "0").apply();
                 buildNotification("OneBand", "You havn't moved in a while. Get up!", Steps.class, 1);
             }
@@ -75,6 +97,56 @@ public class MonitorThread extends Thread {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }
+        }
+    }
+
+    public void emergency() {
+        if(sharedPreferences.getString("emergencyNow", "0").equals("1")) {
+            //contacting emergency contacts
+            Log.d( lat, "latitude : ");
+            Log.d( longi, "Longitude : ");
+            ArrayList<HashMap<String, String>> contacts = dbtools.getEmergencyContacts();
+            for(int i = 0; i < contacts.size(); i++) {
+                HashMap<String, String> contact = contacts.get(i);
+                sendSms(contact.get("phone"), "I'm in trouble. I'm at location http://maps.google.com/?q="+lat+","+longi, false);
+            }
+
+            Log.d("", "Sending SMS to emergency contacts!");
+            sharedPreferences.edit().putString("emergencyNow", "0").apply();
+        }
+    }
+
+    private void sendSms(String phonenumber,String message, boolean isBinary)
+    {
+        SmsManager manager = SmsManager.getDefault();
+        Intent notificationIntent = new Intent(context, Lobby.class);
+        PendingIntent piSend = PendingIntent.getBroadcast(context, 0, notificationIntent, 0); //new Intent(SMS_SENT)
+        PendingIntent piDelivered = PendingIntent.getBroadcast(context, 0, notificationIntent, 0); //new Intent(SMS_DELIVERED)
+
+        if(isBinary)
+        {
+            byte[] data = new byte[message.length()];
+
+            for(int index=0; index<message.length() && index < 160; ++index)
+            {
+                data[index] = (byte)message.charAt(index);
+            }
+            manager.sendDataMessage(phonenumber, null, (short) 121, data,piSend, piDelivered);
+        }
+        else
+        {
+            int length = message.length();
+
+            if(length > 160)
+            {
+                ArrayList<String> messagelist = manager.divideMessage(message);
+
+                manager.sendMultipartTextMessage(phonenumber, null, messagelist, null, null);
+            }
+            else
+            {
+                manager.sendTextMessage(phonenumber, null, message, piSend, piDelivered);
             }
         }
     }

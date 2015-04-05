@@ -204,6 +204,16 @@ public class ConnectThread extends Thread implements MyAsyncResponse {
                 break;
             }
         }
+        for(int i = 0; i < dataArray.length; i++) {
+            if(dataArray[i] == null) {
+                break;
+            }
+            if(dataArray[i].charAt(0) == 'E') {
+                if(dataArray[i].charAt(1) == '1') {
+                    sharedPreferences.edit().putString("emergencyNow", "1");
+                }
+            }
+        }
     }
 
     public void sendTemperature(String fahrenheit){

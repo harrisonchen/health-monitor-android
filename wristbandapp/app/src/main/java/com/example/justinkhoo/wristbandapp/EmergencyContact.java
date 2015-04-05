@@ -1,4 +1,4 @@
-package com.example.justinkhoo.wristbandapp.chart;
+package com.example.justinkhoo.wristbandapp;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,12 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.example.justinkhoo.wristbandapp.DBTools;
-import com.example.justinkhoo.wristbandapp.R;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 
 public class EmergencyContact extends Activity {
