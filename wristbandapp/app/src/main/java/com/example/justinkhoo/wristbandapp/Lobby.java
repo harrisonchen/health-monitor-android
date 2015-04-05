@@ -37,8 +37,6 @@ public class Lobby extends Activity implements MyAsyncResponse {
 
     DBTools dbtools = new DBTools(this);
 
-    MonitorThread monitorThread;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,9 +84,6 @@ public class Lobby extends Activity implements MyAsyncResponse {
                 }
             }
         });
-
-        monitorThread = new MonitorThread(this);
-        monitorThread.start();
     }
 
     public void syncData(View view) {

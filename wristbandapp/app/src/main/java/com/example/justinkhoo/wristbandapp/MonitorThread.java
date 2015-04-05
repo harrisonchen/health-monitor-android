@@ -27,24 +27,48 @@ public class MonitorThread extends Thread {
 
     public void run() {
         while (true) {
-            int stepCount = 0;
+            int stepCount = Integer.parseInt(sharedPreferences.getString("stepCount", "0"));
             int lastStepCount = Integer.parseInt(sharedPreferences.getString("lastStepCount", "0"));
             int lastReceivedStepCount = Integer.parseInt(sharedPreferences.getString("lastReceivedStepCount", "0"));
+            int notMoving = Integer.parseInt(sharedPreferences.getString("notMoving", "0"));
+
+//            sharedPreferences.edit().putString("lastReceivedStepCount", String.valueOf(lastReceivedStepCount + 1)).apply();
 
             if(lastStepCount > lastReceivedStepCount) {
-                stepCount = lastStepCount + lastReceivedStepCount;
+                if(stepCount == lastStepCount + lastReceivedStepCount) {
+                    sharedPreferences.edit().putString("notMoving", String.valueOf(notMoving + 1)).apply();
+                } else {
+                    sharedPreferences.edit().putString("notMoving", "0").apply();
+                    stepCount = lastStepCount + lastReceivedStepCount;
+                }
             }
             else {
-                stepCount = lastReceivedStepCount - lastStepCount;
+                if(stepCount == lastReceivedStepCount - lastStepCount) {
+                    sharedPreferences.edit().putString("notMoving", String.valueOf(notMoving + 1)).apply();
+                } else {
+                    sharedPreferences.edit().putString("notMoving", "0").apply();
+                    stepCount = lastReceivedStepCount - lastStepCount;
+                }
             }
 
+            notMoving = Integer.parseInt(sharedPreferences.getString("notMoving", "0"));
+
+            if(notMoving >= 200) {
+                sharedPreferences.edit().putString("notMoving", "0").apply();
+                buildNotification("OneBand", "You havn't moved in a while. Get up!", Steps.class, 1);
+            }
+
+            Log.d("notMoving", sharedPreferences.getString("notMoving", "0"));
             Log.d("stepCount", String.valueOf(stepCount));
             Log.d("lastReceivedStepCount", String.valueOf(sharedPreferences.getString("lastReceivedStepCount", "0")));
 
             sharedPreferences.edit().putString("stepCount", String.valueOf(stepCount)).apply();
 
             if(stepCount >= Double.parseDouble(sharedPreferences.getString("stepGoal", "999999"))) {
-                buildNotification("OneBand", "You have reached your step goal!", Steps.class, 1);
+                if(sharedPreferences.getString("stepsAchieved", "0").equals("0")) {
+                    sharedPreferences.edit().putString("stepsAchieved", "1").apply();
+                    buildNotification("OneBand", "You have reached your step goal!", Steps.class, 1);
+                }
             }
 
             try {

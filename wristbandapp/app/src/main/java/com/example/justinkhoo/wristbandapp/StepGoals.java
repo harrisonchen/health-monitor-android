@@ -45,6 +45,7 @@ public class StepGoals extends Activity {
     }
 
     public void calculateStepsNeeded(View view) {
+        sharedPreferences.edit().putString("stepsAchieved", "0").apply();
         if(currentWeightEditText.getText().toString().equals("") || caloriesToLoseEditText.getText().toString().equals("")) {
             return;
         }

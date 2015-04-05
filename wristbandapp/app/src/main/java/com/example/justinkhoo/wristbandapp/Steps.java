@@ -69,6 +69,7 @@ public class Steps extends Activity {
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                sharedPreferences.edit().putString("stepsAchieved", "0").apply();
                 if(stepsTextView.getText().toString().equals("0")) {
                     sharedPreferences.edit().putString("stepCount", "0").apply();
                     return;

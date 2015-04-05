@@ -11,6 +11,7 @@ import android.view.MenuItem;
 public class SplashScreen extends Activity {
 
     private static int SPLASH_TIME_OUT = 750;
+    MonitorThread monitorThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +29,7 @@ public class SplashScreen extends Activity {
             public void run() {
                 // This method will be executed once the timer is over
                 // Start your app main activity
-                Intent i = new Intent(SplashScreen.this, Devices.class);
+                Intent i = new Intent(SplashScreen.this, Lobby.class);
                 startActivity(i);
 
                 // close this activity
@@ -37,6 +38,9 @@ public class SplashScreen extends Activity {
                 overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
             }
         }, SPLASH_TIME_OUT);
+
+        monitorThread = new MonitorThread(this);
+        monitorThread.start();
     }
 
 
