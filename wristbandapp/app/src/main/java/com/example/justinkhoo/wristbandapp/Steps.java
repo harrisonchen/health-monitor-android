@@ -49,11 +49,6 @@ public class Steps extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_steps);
-        for(int i = 50; i <= 100; i = i + 2) {
-            HashMap<String, String> map = new HashMap<String, String>();
-            map.put("step_count", String.valueOf(i));
-            dbtools.addSteps(map);
-        }
 
         sharedPreferences = this.getSharedPreferences("com.example.justinkhoo.wristbandapp", Context.MODE_PRIVATE);
 

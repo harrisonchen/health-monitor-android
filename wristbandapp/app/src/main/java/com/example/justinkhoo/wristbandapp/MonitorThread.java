@@ -50,7 +50,10 @@ public class MonitorThread extends Thread {
             int lastReceivedStepCount = Integer.parseInt(sharedPreferences.getString("lastReceivedStepCount", "0"));
             int notMoving = Integer.parseInt(sharedPreferences.getString("notMoving", "0"));
 
-//            sharedPreferences.edit().putString("lastReceivedStepCount", String.valueOf(lastReceivedStepCount + 1)).apply();
+            // MOCK DATA
+            sharedPreferences.edit().putString("lastReceivedStepCount", String.valueOf(lastReceivedStepCount + 1)).apply();
+            sharedPreferences.edit().putString("fahrenheit", String.valueOf(lastReceivedStepCount + 1)).apply();
+            // ---------
 
             if(lastStepCount > lastReceivedStepCount) {
                 if(stepCount == lastStepCount + lastReceivedStepCount) {

@@ -4,10 +4,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.chart.BarChart;
@@ -24,15 +28,27 @@ import java.util.Random;
 public class Temperatures extends Activity {
 
     DBTools dbTools = new DBTools(this);
+    Handler mHandler;
+    TemperatureHandlerThread temperatureHandlerThread;
+    TextView temperatureTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_temperatures);
-        for(int i = 50; i <= 100; i = i + 2) {
-            HashMap<String, String> map = new HashMap<String, String>();
-            map.put("fahrenheit", String.valueOf(i));
-            dbTools.addTemperature(map);
-        }
+
+        temperatureTextView = (TextView) findViewById(R.id.temperatureTextView);
+
+        mHandler = new Handler(Looper.getMainLooper()) {
+            public void handleMessage(Message msg) {
+                String message = msg.getData().getString("message");
+
+                temperatureTextView.setText(message + "\u00B0F");
+            }
+        };
+
+        temperatureHandlerThread = new TemperatureHandlerThread(mHandler, this);
+        temperatureHandlerThread.start();
     }
 
     @Override

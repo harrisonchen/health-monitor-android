@@ -178,6 +178,7 @@ public class ConnectThread extends Thread implements MyAsyncResponse {
                 map.put("fahrenheit", dataArray[i].substring(1));
                 dbtools.addTemperature(map);
                 Log.d("fahrenheit:", dataArray[i].substring(1));
+                sharedPreferences.edit().putString("fahrenheit", String.valueOf(dataArray[i].substring(1))).apply();
                 break;
 
             }
@@ -201,6 +202,7 @@ public class ConnectThread extends Thread implements MyAsyncResponse {
                 map.put("beats_per_minute", dataArray[i].substring(1));
                 Log.d("beats_per_minute:", dataArray[i].substring(1));
                 dbtools.addHeartbeat(map);
+                sharedPreferences.edit().putString("beats_per_minute", String.valueOf(dataArray[i].substring(1))).apply();
                 break;
             }
         }
