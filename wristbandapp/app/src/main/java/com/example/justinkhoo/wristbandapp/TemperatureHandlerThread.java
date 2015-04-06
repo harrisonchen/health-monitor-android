@@ -24,7 +24,7 @@ public class TemperatureHandlerThread extends Thread {
         while (true) {
             Message msgObj = handler.obtainMessage();
             Bundle b = new Bundle();
-            int fahrenheit = Integer.parseInt(sharedPreferences.getString("fahrenheit", "83"));
+            double fahrenheit = Double.parseDouble(sharedPreferences.getString("fahrenheit", "83"));
 
             b.putString("message", String.valueOf(fahrenheit));
             msgObj.setData(b);

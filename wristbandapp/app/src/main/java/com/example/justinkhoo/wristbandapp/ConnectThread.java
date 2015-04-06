@@ -170,50 +170,66 @@ public class ConnectThread extends Thread implements MyAsyncResponse {
         String[] dataArray;
         dataArray = data.split(":");
         for(int i = 0; i < dataArray.length; i++) {
-//            if(dataArray[i] == null) {
-//                break;
-//            }
-            if(dataArray[i] != null && dataArray[i].charAt(0) == 'T') {
-                HashMap<String, String> map = new HashMap<String, String>();
-                map.put("fahrenheit", dataArray[i].substring(1));
-                dbtools.addTemperature(map);
-                Log.d("fahrenheit:", dataArray[i].substring(1));
-                sharedPreferences.edit().putString("fahrenheit", String.valueOf(dataArray[i].substring(1))).apply();
-                break;
+            try {
+                if (dataArray[i] == null) {
+                    break;
+                }
+                if (dataArray[i] != null && dataArray[i].charAt(0) == 'T') {
+                    HashMap<String, String> map = new HashMap<String, String>();
+                    map.put("fahrenheit", dataArray[i].substring(1));
+                    dbtools.addTemperature(map);
+                    Log.d("fahrenheit:", dataArray[i].substring(1));
+                    sharedPreferences.edit().putString("fahrenheit", String.valueOf(dataArray[i].substring(1))).apply();
+                    break;
+
+                }
+            } catch(Exception e) {
 
             }
         }
         for(int i = 0; i < dataArray.length; i++) {
-            if(dataArray[i] == null) {
-                break;
-            }
-            if(dataArray[i].charAt(0) == 'S') {
-                sharedPreferences.edit().putString("lastReceivedStepCount", dataArray[i].substring(1)).apply();
-                Log.d("steps:", dataArray[i].substring(1));
-                break;
-            }
-        }
-        for(int i = 0; i < dataArray.length; i++) {
-            if(dataArray[i] == null) {
-                break;
-            }
-            if(dataArray[i].charAt(0) == 'H') {
-                HashMap<String, String> map = new HashMap<String, String>();
-                map.put("beats_per_minute", dataArray[i].substring(1));
-                Log.d("beats_per_minute:", dataArray[i].substring(1));
-                dbtools.addHeartbeat(map);
-                sharedPreferences.edit().putString("beats_per_minute", String.valueOf(dataArray[i].substring(1))).apply();
-                break;
-            }
-        }
-        for(int i = 0; i < dataArray.length; i++) {
-            if(dataArray[i] == null) {
-                break;
-            }
-            if(dataArray[i].charAt(0) == 'E') {
-                if(dataArray[i].charAt(1) == '1') {
-                    sharedPreferences.edit().putString("emergencyNow", "1");
+            try {
+                if (dataArray[i] == null) {
+                    break;
                 }
+                if (dataArray[i].charAt(0) == 'S') {
+                    sharedPreferences.edit().putString("lastReceivedStepCount", dataArray[i].substring(1)).apply();
+                    Log.d("steps:", dataArray[i].substring(1));
+                    break;
+                }
+            } catch(Exception e) {
+
+            }
+        }
+        for(int i = 0; i < dataArray.length; i++) {
+            try {
+                if(dataArray[i] == null) {
+                    break;
+                }
+                if(dataArray[i].charAt(0) == 'H') {
+                    HashMap<String, String> map = new HashMap<String, String>();
+                    map.put("beats_per_minute", dataArray[i].substring(1));
+                    Log.d("beats_per_minute:", dataArray[i].substring(1));
+                    dbtools.addHeartbeat(map);
+                    sharedPreferences.edit().putString("beats_per_minute", String.valueOf(dataArray[i].substring(1))).apply();
+                    break;
+                }
+            } catch(Exception e) {
+
+            }
+        }
+        for(int i = 0; i < dataArray.length; i++) {
+            try {
+                if(dataArray[i] == null) {
+                    break;
+                }
+                if(dataArray[i].charAt(0) == 'E') {
+                    if(dataArray[i].charAt(1) == '1') {
+                        sharedPreferences.edit().putString("emergencyNow", "1").apply();
+                    }
+                }
+            } catch(Exception e) {
+
             }
         }
     }

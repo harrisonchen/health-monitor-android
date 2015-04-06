@@ -51,9 +51,10 @@ public class MonitorThread extends Thread {
             int notMoving = Integer.parseInt(sharedPreferences.getString("notMoving", "0"));
 
             // MOCK DATA
-            sharedPreferences.edit().putString("lastReceivedStepCount", String.valueOf(lastReceivedStepCount + 1)).apply();
-            sharedPreferences.edit().putString("fahrenheit", String.valueOf(lastReceivedStepCount + 1)).apply();
-            sharedPreferences.edit().putString("beats_per_minute", String.valueOf(lastReceivedStepCount + 1)).apply();
+//            sharedPreferences.edit().putString("lastReceivedStepCount", String.valueOf(lastReceivedStepCount + 1)).apply();
+//            sharedPreferences.edit().putString("fahrenheit", String.valueOf(lastReceivedStepCount + 1)).apply();
+//            sharedPreferences.edit().putString("beats_per_minute", String.valueOf(lastReceivedStepCount + 1)).apply();
+//            sharedPreferences.edit().putString("notMoving", String.valueOf(notMoving + 1)).apply();
             // ---------
 
             if(lastStepCount > lastReceivedStepCount) {
@@ -75,13 +76,43 @@ public class MonitorThread extends Thread {
 
             notMoving = Integer.parseInt(sharedPreferences.getString("notMoving", "0"));
 
-            if(notMoving >= 20) {
-                sharedPreferences.edit().putString("emergencyNow", "1").apply();
+            // Mocking emergency!
+//            if(notMoving >= 50) {
+//                sharedPreferences.edit().putString("emergencyNow", "1").apply();
+//            }
+            // ------------------
+
+            if(notMoving == 40 && Integer.parseInt(sharedPreferences.getString("beats_per_minute", "0")) > 100
+                    && sharedPreferences.getString("fastHeartNotification", "0").equals("0")) {
+                sharedPreferences.edit().putString("fastHeartNotification", "1").apply();
             }
 
-            if(notMoving >= 20) {
+            if(notMoving == 50) {
                 sharedPreferences.edit().putString("notMoving", "0").apply();
+                sharedPreferences.edit().putString("moveNotification", "1").apply();
+            }
+
+            if(sharedPreferences.getString("moveNotification", "0").equals("1")) {
+                sharedPreferences.edit().putString("moveNotification", "0").apply();
                 buildNotification("OneBand", "You havn't moved in a while. Get up!", Steps.class, 1);
+            }
+            if(sharedPreferences.getString("fastHeartNotification", "0").equals("1")) {
+                buildNotification("OneBand", "You're heart is at a constant high. Maybe you should check a doctor?", Heartrate.class, 3);
+                if(notMoving <= 50) {
+                    sharedPreferences.edit().putString("fastHeartNotification", "0").apply();
+                }
+            }
+
+            if(Double.parseDouble(sharedPreferences.getString("fahrenheit", "0")) > 80) {
+                if(sharedPreferences.getString("lastTemperatureNotification", "0").equals("0")) {
+                    buildNotification("OneBand", "Body temperature high", Temperatures.class, 5);
+                    sharedPreferences.edit().putString("lastTemperatureNotification", "60").apply();
+                } else {
+                    if(Integer.parseInt(sharedPreferences.getString("lastTemperatureNotification", "0")) > 0) {
+                        int temp = Integer.parseInt(sharedPreferences.getString("lastTemperatureNotification", "0")) - 1;
+                        sharedPreferences.edit().putString("lastTemperatureNotification", String.valueOf(temp)).apply();
+                    }
+                }
             }
 
             Log.d("notMoving", sharedPreferences.getString("notMoving", "0"));
@@ -93,7 +124,7 @@ public class MonitorThread extends Thread {
             if(stepCount >= Double.parseDouble(sharedPreferences.getString("stepGoal", "999999"))) {
                 if(sharedPreferences.getString("stepsAchieved", "0").equals("0")) {
                     sharedPreferences.edit().putString("stepsAchieved", "1").apply();
-                    buildNotification("OneBand", "You have reached your step goal!", Steps.class, 1);
+                    buildNotification("OneBand", "You have reached your step goal!", Steps.class, 2);
                 }
             }
 
@@ -106,8 +137,10 @@ public class MonitorThread extends Thread {
     }
 
     public void emergency() {
-        if(sharedPreferences.getString("emergencyNow", "0").equals("1")) {
+        if(sharedPreferences.getString("emergencyNow", "0").equals("1") && sharedPreferences.getString("emergencyNowNotified", "0").equals("0")) {
             //contacting emergency contacts
+            buildNotification("OneBand", "Sending help NOW", EmergencyContact.class, 4);
+
             Log.d( lat, "latitude : ");
             Log.d( longi, "Longitude : ");
             ArrayList<HashMap<String, String>> contacts = dbtools.getEmergencyContacts();
@@ -118,6 +151,7 @@ public class MonitorThread extends Thread {
 
             Log.d("", "Sending SMS to emergency contacts!");
             sharedPreferences.edit().putString("emergencyNow", "0").apply();
+            sharedPreferences.edit().putString("emergencyNowNotified", "1").apply();
         }
     }
 
@@ -162,7 +196,7 @@ public class MonitorThread extends Thread {
     public void buildNotification(String title, String content, Class classname, Integer id) {
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.drawable.ic_launcher)
+                        .setSmallIcon(R.drawable.oneband_icon)
                         .setContentTitle(title)
                         .setContentText(content)
                         .setAutoCancel(true)
