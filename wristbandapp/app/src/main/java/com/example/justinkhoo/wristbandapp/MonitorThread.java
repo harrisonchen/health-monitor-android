@@ -43,7 +43,7 @@ public class MonitorThread extends Thread {
             lat = mylocationmanager.getLatitude();
             longi = mylocationmanager.getLongitude();
 
-//            emergency();
+            emergency();
 
             int stepCount = Integer.parseInt(sharedPreferences.getString("stepCount", "0"));
             int lastStepCount = Integer.parseInt(sharedPreferences.getString("lastStepCount", "0"));
@@ -77,9 +77,9 @@ public class MonitorThread extends Thread {
             notMoving = Integer.parseInt(sharedPreferences.getString("notMoving", "0"));
 
             // Mocking emergency!
-            if(notMoving >= 50) {
-                sharedPreferences.edit().putString("emergencyNow", "1").apply();
-            }
+//            if(notMoving >= 50) {
+//                sharedPreferences.edit().putString("emergencyNow", "1").apply();
+//            }
             // ------------------
 
             if(notMoving == 40 && Integer.parseInt(sharedPreferences.getString("beats_per_minute", "0")) > 100
@@ -100,6 +100,18 @@ public class MonitorThread extends Thread {
                 buildNotification("OneBand", "You're heart is at a constant high. Maybe you should check a doctor?", Heartrate.class, 3);
                 if(notMoving <= 50) {
                     sharedPreferences.edit().putString("fastHeartNotification", "0").apply();
+                }
+            }
+
+            if(Double.parseDouble(sharedPreferences.getString("fahrenheit", "0")) > 80) {
+                if(sharedPreferences.getString("lastTemperatureNotification", "0").equals("0")) {
+                    buildNotification("OneBand", "Body temperature high", Temperatures.class, 5);
+                    sharedPreferences.edit().putString("lastTemperatureNotification", "60").apply();
+                } else {
+                    if(Integer.parseInt(sharedPreferences.getString("lastTemperatureNotification", "0")) > 0) {
+                        int temp = Integer.parseInt(sharedPreferences.getString("lastTemperatureNotification", "0")) - 1;
+                        sharedPreferences.edit().putString("lastTemperatureNotification", String.valueOf(temp)).apply();
+                    }
                 }
             }
 
@@ -134,7 +146,7 @@ public class MonitorThread extends Thread {
             ArrayList<HashMap<String, String>> contacts = dbtools.getEmergencyContacts();
             for(int i = 0; i < contacts.size(); i++) {
                 HashMap<String, String> contact = contacts.get(i);
-//                sendSms(contact.get("phone"), "I'm in trouble. I'm at location http://maps.google.com/?q="+lat+","+longi, false);
+                sendSms(contact.get("phone"), "I'm in trouble. I'm at location http://maps.google.com/?q="+lat+","+longi, false);
             }
 
             Log.d("", "Sending SMS to emergency contacts!");

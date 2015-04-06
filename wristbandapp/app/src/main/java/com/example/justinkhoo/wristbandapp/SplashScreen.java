@@ -23,6 +23,8 @@ public class SplashScreen extends Activity {
 
         sharedPreferences = this.getSharedPreferences("com.example.justinkhoo.wristbandapp", Context.MODE_PRIVATE);
         sharedPreferences.edit().putString("emergencyNowNotified", "0").apply();
+        sharedPreferences.edit().putString("emergencyNow", "0").apply();
+        sharedPreferences.edit().putString("lastTemperatureNotification", "60").apply();
 
         new Handler().postDelayed(new Runnable() {
 

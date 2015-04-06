@@ -20,21 +20,6 @@
         android:layout_alignParentEnd="true"
         android:layout_above="@+id/syncButton" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="My Health"
-        android:background="@drawable/orange_button"
-        android:id="@+id/myHealthButton"
-        android:textSize="28sp"
-        android:textColor="#FFFFFF"
-        android:padding="14sp"
-        android:width="300sp"
-        android:layout_marginTop="8sp"
-        android:layout_marginBottom="8sp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -68,8 +53,9 @@
         android:padding="14sp"
         android:width="300sp"
         android:onClick="goToContact"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@+id/myHealthButton" />
+        android:layout_marginBottom="8sp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>

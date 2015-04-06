@@ -225,7 +225,7 @@ public class ConnectThread extends Thread implements MyAsyncResponse {
                 }
                 if(dataArray[i].charAt(0) == 'E') {
                     if(dataArray[i].charAt(1) == '1') {
-                        sharedPreferences.edit().putString("emergencyNow", "1");
+                        sharedPreferences.edit().putString("emergencyNow", "1").apply();
                     }
                 }
             } catch(Exception e) {
