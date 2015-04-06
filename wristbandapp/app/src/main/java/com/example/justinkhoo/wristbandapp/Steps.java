@@ -173,7 +173,7 @@ public class Steps extends Activity {
     private Double getMax() {
         double max = 0;
         if(dbtools.getSteps().size() == 0) return max;
-        for (int i = 0; i < dbtools.getTemperature().size(); i++) {
+        for (int i = 0; i < dbtools.getSteps().size(); i++) {
             if(Double.parseDouble(dbtools.getSteps().get(i).get("step_count")) > max){
                 max = Double.parseDouble(dbtools.getSteps().get(i).get("step_count"));
             }
