@@ -43,7 +43,7 @@ public class MonitorThread extends Thread {
             lat = mylocationmanager.getLatitude();
             longi = mylocationmanager.getLongitude();
 
-            emergency();
+//            emergency();
 
             int stepCount = Integer.parseInt(sharedPreferences.getString("stepCount", "0"));
             int lastStepCount = Integer.parseInt(sharedPreferences.getString("lastStepCount", "0"));
@@ -51,28 +51,28 @@ public class MonitorThread extends Thread {
             int notMoving = Integer.parseInt(sharedPreferences.getString("notMoving", "0"));
 
             // MOCK DATA
-            sharedPreferences.edit().putString("lastReceivedStepCount", String.valueOf(lastReceivedStepCount + 1)).apply();
-            sharedPreferences.edit().putString("fahrenheit", String.valueOf(lastReceivedStepCount + 1)).apply();
-            sharedPreferences.edit().putString("beats_per_minute", String.valueOf(lastReceivedStepCount + 1)).apply();
-            sharedPreferences.edit().putString("notMoving", String.valueOf(notMoving + 1)).apply();
+//            sharedPreferences.edit().putString("lastReceivedStepCount", String.valueOf(lastReceivedStepCount + 1)).apply();
+//            sharedPreferences.edit().putString("fahrenheit", String.valueOf(lastReceivedStepCount + 1)).apply();
+//            sharedPreferences.edit().putString("beats_per_minute", String.valueOf(lastReceivedStepCount + 1)).apply();
+//            sharedPreferences.edit().putString("notMoving", String.valueOf(notMoving + 1)).apply();
             // ---------
 
-//            if(lastStepCount > lastReceivedStepCount) {
-//                if(stepCount == lastStepCount + lastReceivedStepCount) {
-//                    sharedPreferences.edit().putString("notMoving", String.valueOf(notMoving + 1)).apply();
-//                } else {
-//                    sharedPreferences.edit().putString("notMoving", "0").apply();
-//                    stepCount = lastStepCount + lastReceivedStepCount;
-//                }
-//            }
-//            else {
-//                if(stepCount == lastReceivedStepCount - lastStepCount) {
-//                    sharedPreferences.edit().putString("notMoving", String.valueOf(notMoving + 1)).apply();
-//                } else {
-//                    sharedPreferences.edit().putString("notMoving", "0").apply();
-//                    stepCount = lastReceivedStepCount - lastStepCount;
-//                }
-//            }
+            if(lastStepCount > lastReceivedStepCount) {
+                if(stepCount == lastStepCount + lastReceivedStepCount) {
+                    sharedPreferences.edit().putString("notMoving", String.valueOf(notMoving + 1)).apply();
+                } else {
+                    sharedPreferences.edit().putString("notMoving", "0").apply();
+                    stepCount = lastStepCount + lastReceivedStepCount;
+                }
+            }
+            else {
+                if(stepCount == lastReceivedStepCount - lastStepCount) {
+                    sharedPreferences.edit().putString("notMoving", String.valueOf(notMoving + 1)).apply();
+                } else {
+                    sharedPreferences.edit().putString("notMoving", "0").apply();
+                    stepCount = lastReceivedStepCount - lastStepCount;
+                }
+            }
 
             notMoving = Integer.parseInt(sharedPreferences.getString("notMoving", "0"));
 
@@ -134,7 +134,7 @@ public class MonitorThread extends Thread {
             ArrayList<HashMap<String, String>> contacts = dbtools.getEmergencyContacts();
             for(int i = 0; i < contacts.size(); i++) {
                 HashMap<String, String> contact = contacts.get(i);
-                sendSms(contact.get("phone"), "I'm in trouble. I'm at location http://maps.google.com/?q="+lat+","+longi, false);
+//                sendSms(contact.get("phone"), "I'm in trouble. I'm at location http://maps.google.com/?q="+lat+","+longi, false);
             }
 
             Log.d("", "Sending SMS to emergency contacts!");
