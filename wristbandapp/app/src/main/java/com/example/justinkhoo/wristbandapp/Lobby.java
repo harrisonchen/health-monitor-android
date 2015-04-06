@@ -16,8 +16,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.message.BasicNameValuePair;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 
 public class Lobby extends Activity implements MyAsyncResponse {
@@ -165,5 +172,40 @@ public class Lobby extends Activity implements MyAsyncResponse {
     @Override
     public void processFinish(String output) {
 
+    }
+
+    public void sync(View view) {
+        String url = "https://oneband.herokuapp.com/api/v1/sync?";
+
+        String hb = "hb=";
+        String tp = "&tp=";
+        String sp = "&sp=";
+
+        ArrayList<HashMap<String, String>> heartbeats = dbtools.getHeartbeat();
+        ArrayList<HashMap<String, String>> temperatures = dbtools.getTemperature();
+        ArrayList<HashMap<String, String>> steps = dbtools.getSteps();
+
+        for(int i = 0; i < heartbeats.size(); i++) {
+            hb += String.valueOf(heartbeats.get(i).get("beats_per_minute")) + ":";
+        }
+
+        for(int i = 0; i < temperatures.size(); i++) {
+            tp += String.valueOf(temperatures.get(i).get("fahrenheit")) +":";
+
+        }
+
+        for(int i = 0; i < steps.size(); i++) {
+            sp += String.valueOf(steps.get(i).get("step_count")) +":";
+        }
+
+        url += hb + tp + sp;
+
+//        List<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
+//        String paramString = URLEncodedUtils.format(params, "utf-8");
+
+//        url += paramString;
+        HttpGet httpGet = new HttpGet(url);
+
+        new MyHttpGet(this).execute(httpGet);
     }
 }

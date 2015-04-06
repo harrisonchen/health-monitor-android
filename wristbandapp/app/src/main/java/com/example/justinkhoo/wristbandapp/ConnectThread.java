@@ -238,15 +238,15 @@ public class ConnectThread extends Thread implements MyAsyncResponse {
     }
 
     public void sendTemperature(String fahrenheit){
-//        String url = "https://health-monitor.herokuapp.com/api/v1/temperatures.json?";
-//
-//        List<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
-//        params.add(new BasicNameValuePair("fahrenheit", fahrenheit));
-//        String paramString = URLEncodedUtils.format(params, "utf-8");
-//
-//        url += paramString;
-//        HttpPost httpPost = new HttpPost(url);
-//
-//        new MyHttpPost(this).execute(httpPost);
+        String url = "https://health-monitor.herokuapp.com/api/v1/temperatures.json?";
+
+        List<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
+        params.add(new BasicNameValuePair("fahrenheit", fahrenheit));
+        String paramString = URLEncodedUtils.format(params, "utf-8");
+
+        url += paramString;
+        HttpPost httpPost = new HttpPost(url);
+
+        new MyHttpPost(this).execute(httpPost);
     }
 }
