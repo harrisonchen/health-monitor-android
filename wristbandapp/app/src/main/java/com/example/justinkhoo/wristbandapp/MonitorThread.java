@@ -53,6 +53,7 @@ public class MonitorThread extends Thread {
             // MOCK DATA
             sharedPreferences.edit().putString("lastReceivedStepCount", String.valueOf(lastReceivedStepCount + 1)).apply();
             sharedPreferences.edit().putString("fahrenheit", String.valueOf(lastReceivedStepCount + 1)).apply();
+            sharedPreferences.edit().putString("beats_per_minute", String.valueOf(lastReceivedStepCount + 1)).apply();
             // ---------
 
             if(lastStepCount > lastReceivedStepCount) {

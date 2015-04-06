@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,21 +27,32 @@ import java.util.Random;
 public class Heartrate extends Activity {
 
     TextView heartbeatTextView;
+    TextView minTextView;
     DBTools dbtools = new DBTools(this);
+    Handler mHandler;
+    HeartrateHandlerThread heartrateHandlerThread;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_heartrate);
-        for(int i = 50; i <= 100; i = i + 2) {
-            HashMap<String, String> map = new HashMap<String, String>();
-            map.put("beats_per_minute", String.valueOf(i));
-            dbtools.addHeartbeat(map);
-        }
+
         Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
 
         heartbeatTextView = (TextView) findViewById( R.id.heartbeatTextView );
-        heartbeatTextView.setTypeface(font);
+        minTextView = (TextView) findViewById(R.id.minTextView);
+        minTextView.setTypeface(font);
 
+        mHandler = new Handler(Looper.getMainLooper()) {
+            public void handleMessage(Message msg) {
+                String message = msg.getData().getString("message");
+
+                heartbeatTextView.setText(message);
+            }
+        };
+
+        heartrateHandlerThread = new HeartrateHandlerThread(mHandler, this);
+        heartrateHandlerThread.start();
     }
 
     @Override
