@@ -115,9 +115,9 @@ public class MonitorThread extends Thread {
                 }
             }
 
-            Log.d("notMoving", sharedPreferences.getString("notMoving", "0"));
-            Log.d("stepCount", String.valueOf(stepCount));
-            Log.d("lastReceivedStepCount", String.valueOf(sharedPreferences.getString("lastReceivedStepCount", "0")));
+//            Log.d("notMoving", sharedPreferences.getString("notMoving", "0"));
+//            Log.d("stepCount", String.valueOf(stepCount));
+//            Log.d("lastReceivedStepCount", String.valueOf(sharedPreferences.getString("lastReceivedStepCount", "0")));
 
             sharedPreferences.edit().putString("stepCount", String.valueOf(stepCount)).apply();
 
