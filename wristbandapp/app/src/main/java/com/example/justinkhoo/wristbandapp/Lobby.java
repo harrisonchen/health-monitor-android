@@ -90,9 +90,9 @@ public class Lobby extends Activity implements MyAsyncResponse {
     }
 
     public void goToContact(View view){
-//        Intent intent = new Intent(Lobby.this, EmergencyContact.class);
-//        startActivity(intent);
-//        overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
+        Intent intent = new Intent(Lobby.this, EmergencyContact.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
 
 //        Intent smsIntent = new Intent(Intent.ACTION_VIEW);
 //        smsIntent.putExtra("address", "3330349");
@@ -104,8 +104,8 @@ public class Lobby extends Activity implements MyAsyncResponse {
 //        sendSms("6268272363", "muhahahahaha", false);
        // startActivity(smsIntent);
 
-        Log.d(mylocationmanager.getLatitude(), "lati : ");
-        Log.d(mylocationmanager.getLongitude(), "long : ");
+//        Log.d(mylocationmanager.getLatitude(), "lati : ");
+//        Log.d(mylocationmanager.getLongitude(), "long : ");
 
 //        callService mycallService = new callService(Lobby.this);
 //        mycallService.printCoor();

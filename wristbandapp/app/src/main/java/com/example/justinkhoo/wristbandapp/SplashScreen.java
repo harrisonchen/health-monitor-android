@@ -1,7 +1,9 @@
 package com.example.justinkhoo.wristbandapp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -12,11 +14,15 @@ public class SplashScreen extends Activity {
 
     private static int SPLASH_TIME_OUT = 750;
     MonitorThread monitorThread;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+
+        sharedPreferences = this.getSharedPreferences("com.example.justinkhoo.wristbandapp", Context.MODE_PRIVATE);
+        sharedPreferences.edit().putString("emergencyNowNotified", "0").apply();
 
         new Handler().postDelayed(new Runnable() {
 

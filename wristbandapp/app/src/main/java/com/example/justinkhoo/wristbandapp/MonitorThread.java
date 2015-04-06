@@ -125,18 +125,21 @@ public class MonitorThread extends Thread {
     }
 
     public void emergency() {
-        if(sharedPreferences.getString("emergencyNow", "0").equals("1")) {
+        if(sharedPreferences.getString("emergencyNow", "0").equals("1") && sharedPreferences.getString("emergencyNowNotified", "0").equals("0")) {
             //contacting emergency contacts
+            buildNotification("OneBand", "Sending help NOW", EmergencyContact.class, 4);
+
             Log.d( lat, "latitude : ");
             Log.d( longi, "Longitude : ");
             ArrayList<HashMap<String, String>> contacts = dbtools.getEmergencyContacts();
             for(int i = 0; i < contacts.size(); i++) {
                 HashMap<String, String> contact = contacts.get(i);
-//                sendSms(contact.get("phone"), "I'm in trouble. I'm at location http://maps.google.com/?q="+lat+","+longi, false);
+                sendSms(contact.get("phone"), "I'm in trouble. I'm at location http://maps.google.com/?q="+lat+","+longi, false);
             }
 
             Log.d("", "Sending SMS to emergency contacts!");
             sharedPreferences.edit().putString("emergencyNow", "0").apply();
+            sharedPreferences.edit().putString("emergencyNowNotified", "1").apply();
         }
     }
 
