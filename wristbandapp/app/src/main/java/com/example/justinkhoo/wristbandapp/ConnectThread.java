@@ -194,6 +194,9 @@ public class ConnectThread extends Thread implements MyAsyncResponse {
                 }
                 if (dataArray[i].charAt(0) == 'S') {
                     sharedPreferences.edit().putString("lastReceivedStepCount", dataArray[i].substring(1)).apply();
+                    HashMap<String, String> map = new HashMap<String, String>();
+                    map.put("step_count", dataArray[i].substring(1));
+                    dbtools.addSteps(map);
                     Log.d("steps:", dataArray[i].substring(1));
                     break;
                 }
