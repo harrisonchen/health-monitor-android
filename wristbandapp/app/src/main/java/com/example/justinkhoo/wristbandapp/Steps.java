@@ -153,6 +153,19 @@ public class Steps extends Activity {
         renderer.setYAxisMax(210);
     }
 
+    private Double getMax() {
+        double max = 0;
+        for (int i = 0; i < dbtools.getTemperature().size(); i++) {
+            if(Double.parseDouble(dbtools.getSteps().get(i).get("step_count")) > max){
+                max = Double.parseDouble(dbtools.getSteps().get(i).get("step_count"));
+            }
+        }
+
+        if(max < 10){
+            max = 50;
+        }
+        return max;
+    }
     private XYMultipleSeriesDataset getBarDemoDataset() {
         XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
         final int nr = 10;

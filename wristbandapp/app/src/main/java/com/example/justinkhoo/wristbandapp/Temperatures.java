@@ -97,6 +97,19 @@ public class Temperatures extends Activity {
         renderer.addSeriesRenderer(r);
         return renderer;
     }
+    private Double getMax() {
+        double max = 0;
+        for (int i = 0; i < dbTools.getTemperature().size(); i++) {
+            if(Double.parseDouble(dbTools.getTemperature().get(i).get("fahrenheit")) > max){
+                max = Double.parseDouble(dbTools.getTemperature().get(i).get("fahrenheit"));
+            }
+        }
+
+        if(max < 10){
+            max = 50;
+        }
+        return max;
+    }
     private void setChartSettings(XYMultipleSeriesRenderer renderer) {
         renderer.setChartTitle("Temperature");
         renderer.setXTitle("time");
@@ -104,7 +117,7 @@ public class Temperatures extends Activity {
         renderer.setXAxisMin(0.5);
         renderer.setXAxisMax(10.5);
         renderer.setYAxisMin(0);
-        renderer.setYAxisMax(210);
+        renderer.setYAxisMax(getMax());
     }
 
     private XYMultipleSeriesDataset getBarDemoDataset() {
@@ -152,7 +165,8 @@ public class Temperatures extends Activity {
 //        startActivity(i);
         XYMultipleSeriesRenderer renderer = getBarDemoRenderer();
         setChartSettings(renderer);
-        Intent i= ChartFactory.getBarChartIntent(this, getBarDemoDataset(), renderer, BarChart.Type.DEFAULT);
+        renderer.setInScroll(true);
+        Intent i = ChartFactory.getBarChartIntent(this, getBarDemoDataset(), renderer, BarChart.Type.DEFAULT);
         startActivity(i);
     }
 }
