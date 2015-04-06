@@ -123,7 +123,10 @@ public class Temperatures extends Activity {
         for (int k = 0; k < nr; k++) {
 //            series.add(60 + r.nextInt() % 20);
 //             if(al.get(k) != null){
-                 series.add(Double.parseDouble(dbTools.getTemperature().get(k).get("fahrenheit")));
+            if(k >= dbTools.getTemperature().size())
+                series.add(0.0);
+            else
+                series.add(Double.parseDouble(dbTools.getTemperature().get(k).get("fahrenheit")));
 //             }else{
 //                 series.add(0);
 //             }

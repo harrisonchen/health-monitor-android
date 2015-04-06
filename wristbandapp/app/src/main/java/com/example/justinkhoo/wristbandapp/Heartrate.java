@@ -118,8 +118,10 @@ public class Heartrate extends Activity {
         // for (int i = 0; i < 1; i++) {
         CategorySeries series = new CategorySeries(""); //"Demo series"
         for (int k = 0; k < nr; k++) {
-
-            series.add(Double.parseDouble(dbtools.getHeartbeat().get(k).get("beats_per_minute")));//series.add(60 + r.nextInt() % 10);
+            if(k >= dbtools.getHeartbeat().size())
+                series.add(0.0);
+            else
+                series.add(Double.parseDouble(dbtools.getHeartbeat().get(k).get("beats_per_minute")));//series.add(60 + r.nextInt() % 10);
         }
         dataset.addSeries(series.toXYSeries());
 

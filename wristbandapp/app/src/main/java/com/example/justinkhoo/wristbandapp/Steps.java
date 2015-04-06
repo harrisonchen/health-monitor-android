@@ -161,7 +161,10 @@ public class Steps extends Activity {
         CategorySeries series = new CategorySeries(""); //Demo series
         ArrayList<String> al = new ArrayList<String>();
         for (int k = 0; k < nr; k++) {
-            series.add(Double.parseDouble(dbtools.getSteps().get(k).get("step_count")));
+            if(k >= dbtools.getSteps().size())
+                series.add(0.0);
+            else
+               series.add(Double.parseDouble(dbtools.getSteps().get(k).get("step_count")));
 //             }else{
 //                 series.add(0);
 //             }
