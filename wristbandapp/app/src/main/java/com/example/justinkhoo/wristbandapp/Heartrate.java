@@ -8,12 +8,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.achartengine.ChartFactory;
+import org.achartengine.GraphicalView;
 import org.achartengine.chart.BarChart;
 import org.achartengine.model.CategorySeries;
 import org.achartengine.model.XYMultipleSeriesDataset;
@@ -22,6 +26,8 @@ import org.achartengine.renderer.XYMultipleSeriesRenderer;
 
 import java.util.HashMap;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class Heartrate extends Activity {
@@ -31,7 +37,7 @@ public class Heartrate extends Activity {
     DBTools dbtools = new DBTools(this);
     Handler mHandler;
     HeartrateHandlerThread heartrateHandlerThread;
-
+    GraphicalView graphicalView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,8 +113,29 @@ public class Heartrate extends Activity {
         renderer.setYTitle("bpm");
         renderer.setXAxisMin(0.5);
         renderer.setXAxisMax(10.5);
-        renderer.setYAxisMin(0);
-        renderer.setYAxisMax(210);
+        renderer.setYAxisMin(getMin());
+        renderer.setYAxisMax(getMax()+10);
+    }
+    private Double getMin(){
+        double min = getMax()-20;
+        for (int i = 0; i < dbtools.getHeartbeat().size(); i++) {
+            if(Double.parseDouble(dbtools.getHeartbeat().get(i).get("beats_per_minute")) < min){
+                min = Double.parseDouble(dbtools.getHeartbeat().get(i).get("beats_per_minute")) -5;
+            }
+        }
+        return min;
+    }
+    private Double getMax() {
+        double max = 0;
+        for (int i = 0; i < dbtools.getHeartbeat().size(); i++) {
+            if(Double.parseDouble(dbtools.getHeartbeat().get(i).get("beats_per_minute")) > max){
+                max = Double.parseDouble(dbtools.getHeartbeat().get(i).get("beats_per_minute"));
+            }
+        }
+        if(max < 10){
+            max = 50;
+        }
+        return max;
     }
 
     private XYMultipleSeriesDataset getBarDemoDataset() {
@@ -134,6 +161,30 @@ public class Heartrate extends Activity {
         return dataset;
     }
 
+    Timer timer;
+    TimerTask timertask;
+    final Handler handler = new Handler();
+
+    int count = 0;
+    public void startTimer() {
+        timer = new Timer();
+        initializeTimerTask();
+        timer.schedule(timertask, 5000, 5000);
+    }
+    public void initializeTimerTask() {
+        timertask = new TimerTask() {
+            public void run() {
+                handler.post(new Runnable() {
+                    public void run() {
+                        //get the current timeStamp
+                        graphicalView.repaint();
+                        Log.d("timer task execution", String.valueOf(count++));
+                    }
+                });
+            }
+        };
+    }
+
     public void goToHeartChart(View view){
         SensorValuesChart1 mychart = new SensorValuesChart1();
 
@@ -145,5 +196,11 @@ public class Heartrate extends Activity {
         setChartSettings(renderer);
         Intent i= ChartFactory.getBarChartIntent(this, getBarDemoDataset(), renderer, BarChart.Type.DEFAULT);
         startActivity(i);
+
+        renderer.setInScroll(true);
+//        graphicalView = ChartFactory.getBarChartView(this, getBarDemoDataset(), renderer, BarChart.Type.DEFAULT);
+//        startTimer();
+
     }
+
 }
