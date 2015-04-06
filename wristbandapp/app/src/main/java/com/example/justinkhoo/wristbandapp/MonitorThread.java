@@ -54,34 +54,53 @@ public class MonitorThread extends Thread {
             sharedPreferences.edit().putString("lastReceivedStepCount", String.valueOf(lastReceivedStepCount + 1)).apply();
             sharedPreferences.edit().putString("fahrenheit", String.valueOf(lastReceivedStepCount + 1)).apply();
             sharedPreferences.edit().putString("beats_per_minute", String.valueOf(lastReceivedStepCount + 1)).apply();
+            sharedPreferences.edit().putString("notMoving", String.valueOf(notMoving + 1)).apply();
             // ---------
 
-            if(lastStepCount > lastReceivedStepCount) {
-                if(stepCount == lastStepCount + lastReceivedStepCount) {
-                    sharedPreferences.edit().putString("notMoving", String.valueOf(notMoving + 1)).apply();
-                } else {
-                    sharedPreferences.edit().putString("notMoving", "0").apply();
-                    stepCount = lastStepCount + lastReceivedStepCount;
-                }
-            }
-            else {
-                if(stepCount == lastReceivedStepCount - lastStepCount) {
-                    sharedPreferences.edit().putString("notMoving", String.valueOf(notMoving + 1)).apply();
-                } else {
-                    sharedPreferences.edit().putString("notMoving", "0").apply();
-                    stepCount = lastReceivedStepCount - lastStepCount;
-                }
-            }
+//            if(lastStepCount > lastReceivedStepCount) {
+//                if(stepCount == lastStepCount + lastReceivedStepCount) {
+//                    sharedPreferences.edit().putString("notMoving", String.valueOf(notMoving + 1)).apply();
+//                } else {
+//                    sharedPreferences.edit().putString("notMoving", "0").apply();
+//                    stepCount = lastStepCount + lastReceivedStepCount;
+//                }
+//            }
+//            else {
+//                if(stepCount == lastReceivedStepCount - lastStepCount) {
+//                    sharedPreferences.edit().putString("notMoving", String.valueOf(notMoving + 1)).apply();
+//                } else {
+//                    sharedPreferences.edit().putString("notMoving", "0").apply();
+//                    stepCount = lastReceivedStepCount - lastStepCount;
+//                }
+//            }
 
             notMoving = Integer.parseInt(sharedPreferences.getString("notMoving", "0"));
 
-            if(notMoving >= 20) {
+            // Mocking emergency!
+            if(notMoving >= 50) {
                 sharedPreferences.edit().putString("emergencyNow", "1").apply();
             }
+            // ------------------
 
-            if(notMoving >= 20) {
+            if(notMoving == 40 && Integer.parseInt(sharedPreferences.getString("beats_per_minute", "0")) > 100
+                    && sharedPreferences.getString("fastHeartNotification", "0").equals("0")) {
+                sharedPreferences.edit().putString("fastHeartNotification", "1").apply();
+            }
+
+            if(notMoving == 50) {
                 sharedPreferences.edit().putString("notMoving", "0").apply();
+                sharedPreferences.edit().putString("moveNotification", "1").apply();
+            }
+
+            if(sharedPreferences.getString("moveNotification", "0").equals("1")) {
+                sharedPreferences.edit().putString("moveNotification", "0").apply();
                 buildNotification("OneBand", "You havn't moved in a while. Get up!", Steps.class, 1);
+            }
+            if(sharedPreferences.getString("fastHeartNotification", "0").equals("1")) {
+                buildNotification("OneBand", "You're heart is at a constant high. Maybe you should check a doctor?", Heartrate.class, 3);
+                if(notMoving <= 50) {
+                    sharedPreferences.edit().putString("fastHeartNotification", "0").apply();
+                }
             }
 
             Log.d("notMoving", sharedPreferences.getString("notMoving", "0"));
@@ -93,7 +112,7 @@ public class MonitorThread extends Thread {
             if(stepCount >= Double.parseDouble(sharedPreferences.getString("stepGoal", "999999"))) {
                 if(sharedPreferences.getString("stepsAchieved", "0").equals("0")) {
                     sharedPreferences.edit().putString("stepsAchieved", "1").apply();
-                    buildNotification("OneBand", "You have reached your step goal!", Steps.class, 1);
+                    buildNotification("OneBand", "You have reached your step goal!", Steps.class, 2);
                 }
             }
 
@@ -113,7 +132,7 @@ public class MonitorThread extends Thread {
             ArrayList<HashMap<String, String>> contacts = dbtools.getEmergencyContacts();
             for(int i = 0; i < contacts.size(); i++) {
                 HashMap<String, String> contact = contacts.get(i);
-                sendSms(contact.get("phone"), "I'm in trouble. I'm at location http://maps.google.com/?q="+lat+","+longi, false);
+//                sendSms(contact.get("phone"), "I'm in trouble. I'm at location http://maps.google.com/?q="+lat+","+longi, false);
             }
 
             Log.d("", "Sending SMS to emergency contacts!");
@@ -162,7 +181,7 @@ public class MonitorThread extends Thread {
     public void buildNotification(String title, String content, Class classname, Integer id) {
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.drawable.ic_launcher)
+                        .setSmallIcon(R.drawable.oneband_icon)
                         .setContentTitle(title)
                         .setContentText(content)
                         .setAutoCancel(true)
