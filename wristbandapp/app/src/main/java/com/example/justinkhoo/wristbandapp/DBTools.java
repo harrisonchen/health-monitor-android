@@ -194,7 +194,9 @@ public class DBTools extends SQLiteOpenHelper {
 
         arrayList = new ArrayList<HashMap<String, String>>();
 
-        String selectQuery = "SELECT * FROM steps ORDER BY id DESC LIMIT 50";
+        String selectQuery = "SELECT * " +
+                "FROM (SELECT * FROM steps ORDER BY id DESC LIMIT 10)" + //just wanna read 10
+                "ORDER BY id ASC";          //get the last 10 entry of the database
 
         SQLiteDatabase database = this.getReadableDatabase();
 
@@ -246,8 +248,9 @@ public class DBTools extends SQLiteOpenHelper {
 
         arrayList = new ArrayList<HashMap<String, String>>();
 
-        String selectQuery = "SELECT * FROM heartbeat ORDER BY id DESC LIMIT 50";
-
+        String selectQuery = "SELECT * " +
+                                    "FROM (SELECT * FROM heartbeat ORDER BY id DESC LIMIT 10)" +
+                                    "ORDER BY id ASC";
         SQLiteDatabase database = this.getReadableDatabase();
 
         Cursor cursor = database.rawQuery(selectQuery, null);
@@ -298,7 +301,9 @@ public class DBTools extends SQLiteOpenHelper {
 
         arrayList = new ArrayList<HashMap<String, String>>();
 
-        String selectQuery = "SELECT * FROM temperature ORDER BY id DESC LIMIT 50";
+        String selectQuery = "SELECT * " +
+                            "FROM (SELECT * FROM temperature ORDER BY id DESC LIMIT 10)" +
+                            "ORDER BY id ASC";
 
         SQLiteDatabase database = this.getReadableDatabase();
 

@@ -42,7 +42,11 @@ public class Heartrate extends Activity {
         heartbeatTextView = (TextView) findViewById( R.id.heartbeatTextView );
         minTextView = (TextView) findViewById(R.id.minTextView);
         minTextView.setTypeface(font);
-
+        for(int i = 50; i <= 100; i = i + 2) {
+            HashMap<String, String> map = new HashMap<String, String>();
+            map.put("beats_per_minute", String.valueOf(i));
+            dbtools.addHeartbeat(map);
+        }
         mHandler = new Handler(Looper.getMainLooper()) {
             public void handleMessage(Message msg) {
                 String message = msg.getData().getString("message");
@@ -118,8 +122,10 @@ public class Heartrate extends Activity {
         // for (int i = 0; i < 1; i++) {
         CategorySeries series = new CategorySeries(""); //"Demo series"
         for (int k = 0; k < nr; k++) {
-
-            series.add(Double.parseDouble(dbtools.getHeartbeat().get(k).get("beats_per_minute")));//series.add(60 + r.nextInt() % 10);
+            if(k >= dbtools.getHeartbeat().size())
+                series.add(0.0);
+            else
+                series.add(Double.parseDouble(dbtools.getHeartbeat().get(k).get("beats_per_minute")));//series.add(60 + r.nextInt() % 10);
         }
         dataset.addSeries(series.toXYSeries());
 
