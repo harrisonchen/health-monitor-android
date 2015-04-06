@@ -149,18 +149,35 @@ public class Steps extends Activity {
         renderer.setYTitle("time");
         renderer.setXAxisMin(0.5);
         renderer.setXAxisMax(10.5);
-        renderer.setYAxisMin(0);
-        renderer.setYAxisMax(210);
+        renderer.setYAxisMin(getMin());
+        renderer.setYAxisMax(getMax()+10);
     }
 
+    private Double getMin(){
+        double min = 0.0;
+        if(getMax()>20){
+            min = getMax()-20;
+        }
+        if(dbtools.getSteps().size() == 0) return min;
+
+        for (int i = 0; i < dbtools.getSteps().size(); i++) {
+            if(Double.parseDouble(dbtools.getSteps().get(i).get("step_count")) < min){
+                min = Double.parseDouble(dbtools.getSteps().get(i).get("step_count")) -5;
+            }
+        }
+        if(min < 10){
+            min = 0;
+        }
+        return min;
+    }
     private Double getMax() {
         double max = 0;
+        if(dbtools.getSteps().size() == 0) return max;
         for (int i = 0; i < dbtools.getTemperature().size(); i++) {
             if(Double.parseDouble(dbtools.getSteps().get(i).get("step_count")) > max){
                 max = Double.parseDouble(dbtools.getSteps().get(i).get("step_count"));
             }
         }
-
         if(max < 10){
             max = 50;
         }

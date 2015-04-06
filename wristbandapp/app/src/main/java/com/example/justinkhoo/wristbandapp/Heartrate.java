@@ -113,12 +113,21 @@ public class Heartrate extends Activity {
         renderer.setYTitle("bpm");
         renderer.setXAxisMin(0.5);
         renderer.setXAxisMax(10.5);
-        renderer.setYAxisMin(0);
-        renderer.setYAxisMax(getMax());
+        renderer.setYAxisMin(getMin());
+        renderer.setYAxisMax(getMax()+10);
+    }
+    private Double getMin(){
+        double min = getMax()-20;
+        for (int i = 0; i < dbtools.getHeartbeat().size(); i++) {
+            if(Double.parseDouble(dbtools.getHeartbeat().get(i).get("beats_per_minute")) < min){
+                min = Double.parseDouble(dbtools.getHeartbeat().get(i).get("beats_per_minute")) -5;
+            }
+        }
+        return min;
     }
     private Double getMax() {
         double max = 0;
-        for (int i = 0; i < dbtools.getTemperature().size(); i++) {
+        for (int i = 0; i < dbtools.getHeartbeat().size(); i++) {
             if(Double.parseDouble(dbtools.getHeartbeat().get(i).get("beats_per_minute")) > max){
                 max = Double.parseDouble(dbtools.getHeartbeat().get(i).get("beats_per_minute"));
             }
