@@ -132,7 +132,7 @@ public class Heartrate extends Activity {
                 max = Double.parseDouble(dbtools.getHeartbeat().get(i).get("beats_per_minute"));
             }
         }
-        if(max < 10){
+        if(max < 50){
             max = 50;
         }
         return max;
