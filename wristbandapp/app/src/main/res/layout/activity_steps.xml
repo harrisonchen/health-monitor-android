@@ -50,20 +50,6 @@
         android:layout_above="@+id/statisticsButton"
         android:layout_alignLeft="@+id/statisticsButton"
         android:layout_alignStart="@+id/statisticsButton" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Notification"
-        android:background="@drawable/orange_button"
-        android:id="@+id/notification"
-        android:textSize="28sp"
-        android:textColor="#FFFFFF"
-        android:padding="14sp"
-        android:width="300sp"
-        android:onClick="addNotification"
-        android:layout_above="@+id/goalsButton"
-        android:layout_alignLeft="@+id/statisticsButton"
-        android:layout_alignStart="@+id/statisticsButton" />
 
     <ImageView
         android:layout_width="wrap_content"
