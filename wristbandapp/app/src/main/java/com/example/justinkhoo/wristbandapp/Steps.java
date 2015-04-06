@@ -174,11 +174,13 @@ public class Steps extends Activity {
         double max = 0;
         if(dbtools.getSteps().size() == 0) return max;
         for (int i = 0; i < dbtools.getSteps().size(); i++) {
-            if(Double.parseDouble(dbtools.getSteps().get(i).get("step_count")) > max){
-                max = Double.parseDouble(dbtools.getSteps().get(i).get("step_count"));
+            if(!dbtools.getSteps().get(i).get("step_count").equals("")) {
+                if (Double.parseDouble(dbtools.getSteps().get(i).get("step_count")) > max) {
+                    max = Double.parseDouble(dbtools.getSteps().get(i).get("step_count"));
+                }
             }
         }
-        if(max < 10){
+        if(max < 50){
             max = 50;
         }
         return max;

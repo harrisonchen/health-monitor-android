@@ -125,7 +125,7 @@ public class Temperatures extends Activity {
             }
         }
 
-        if(max < 10){
+        if(max < 50){
             max = 50;
         }
         return max;
